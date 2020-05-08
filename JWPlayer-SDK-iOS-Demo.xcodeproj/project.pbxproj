@@ -11,6 +11,16 @@
 		118E8EDA2225BE4E006D0685 /* ObjCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118E8ED92225BE4E006D0685 /* ObjCViewController.m */; };
 		11AD69FB2458D0C500802AC4 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11AD69FA2458D0C500802AC4 /* Launch Screen.storyboard */; };
 		11C8120A223ADDF400222E98 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A7D08FE1A5DAFD600C4E749 /* Images.xcassets */; };
+		572CF0A7246588AC00F661CA /* WBRCTIMASettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF092246588AB00F661CA /* WBRCTIMASettings.m */; };
+		572CF0A9246588AC00F661CA /* WBRCTMediaSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF095246588AB00F661CA /* WBRCTMediaSource.m */; };
+		572CF0AA246588AC00F661CA /* WBRCTVideoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF097246588AB00F661CA /* WBRCTVideoItem.m */; };
+		572CF0AB246588AC00F661CA /* WBRCTAdBreak.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF099246588AB00F661CA /* WBRCTAdBreak.m */; };
+		572CF0AC246588AC00F661CA /* WBRCTAdConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF09C246588AB00F661CA /* WBRCTAdConfig.m */; };
+		572CF0AD246588AC00F661CA /* WBRCTPlayerConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF0A2246588AC00F661CA /* WBRCTPlayerConfig.m */; };
+		572CF0AE246588AC00F661CA /* NSDictionary+Converters.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF0A3246588AC00F661CA /* NSDictionary+Converters.m */; };
+		572CF0AF246588AC00F661CA /* WBRCTVideoPlayList.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF0A4246588AC00F661CA /* WBRCTVideoPlayList.m */; };
+		572CF0B0246588AC00F661CA /* WBRCTAdRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF0A5246588AC00F661CA /* WBRCTAdRules.m */; };
+		572CF0B1246588AC00F661CA /* IMASettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 572CF0A6246588AC00F661CA /* IMASettings.m */; };
 		6A7D08F41A5DAFD600C4E749 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7D08F31A5DAFD600C4E749 /* main.m */; };
 		6A7D08F71A5DAFD600C4E749 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7D08F61A5DAFD600C4E749 /* AppDelegate.m */; };
 		6A7D08FA1A5DAFD600C4E749 /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7D08F91A5DAFD600C4E749 /* InitialViewController.m */; };
@@ -37,6 +47,27 @@
 		118E8ED92225BE4E006D0685 /* ObjCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjCViewController.m; sourceTree = "<group>"; };
 		11AD69FA2458D0C500802AC4 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		5104D54F02CEE5A51345C10B /* Pods-JWPlayer-SDK-iOS-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWPlayer-SDK-iOS-Demo.release.xcconfig"; path = "Target Support Files/Pods-JWPlayer-SDK-iOS-Demo/Pods-JWPlayer-SDK-iOS-Demo.release.xcconfig"; sourceTree = "<group>"; };
+		572CF091246588AB00F661CA /* NSDictionary+Converters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Converters.h"; sourceTree = "<group>"; };
+		572CF092246588AB00F661CA /* WBRCTIMASettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBRCTIMASettings.m; sourceTree = "<group>"; };
+		572CF094246588AB00F661CA /* WBRCTPlayerConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBRCTPlayerConfig.h; sourceTree = "<group>"; };
+		572CF095246588AB00F661CA /* WBRCTMediaSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBRCTMediaSource.m; sourceTree = "<group>"; };
+		572CF096246588AB00F661CA /* WBRCTAdBreak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBRCTAdBreak.h; sourceTree = "<group>"; };
+		572CF097246588AB00F661CA /* WBRCTVideoItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBRCTVideoItem.m; sourceTree = "<group>"; };
+		572CF098246588AB00F661CA /* WBRCTAdRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBRCTAdRules.h; sourceTree = "<group>"; };
+		572CF099246588AB00F661CA /* WBRCTAdBreak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBRCTAdBreak.m; sourceTree = "<group>"; };
+		572CF09A246588AB00F661CA /* WBRCTMediaSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBRCTMediaSource.h; sourceTree = "<group>"; };
+		572CF09B246588AB00F661CA /* WBRCTVideoPlayList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBRCTVideoPlayList.h; sourceTree = "<group>"; };
+		572CF09C246588AB00F661CA /* WBRCTAdConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBRCTAdConfig.m; sourceTree = "<group>"; };
+		572CF09D246588AB00F661CA /* WBRCTAdConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBRCTAdConfig.h; sourceTree = "<group>"; };
+		572CF09E246588AB00F661CA /* WBRCTIMASettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBRCTIMASettings.h; sourceTree = "<group>"; };
+		572CF09F246588AB00F661CA /* WBRCTVideoItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBRCTVideoItem.h; sourceTree = "<group>"; };
+		572CF0A0246588AB00F661CA /* IMASettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMASettings.h; sourceTree = "<group>"; };
+		572CF0A2246588AC00F661CA /* WBRCTPlayerConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBRCTPlayerConfig.m; sourceTree = "<group>"; };
+		572CF0A3246588AC00F661CA /* NSDictionary+Converters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Converters.m"; sourceTree = "<group>"; };
+		572CF0A4246588AC00F661CA /* WBRCTVideoPlayList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBRCTVideoPlayList.m; sourceTree = "<group>"; };
+		572CF0A5246588AC00F661CA /* WBRCTAdRules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBRCTAdRules.m; sourceTree = "<group>"; };
+		572CF0A6246588AC00F661CA /* IMASettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMASettings.m; sourceTree = "<group>"; };
+		572CF0B224658A7500F661CA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6A7D08EE1A5DAFD600C4E749 /* JWPlayer-SDK-iOS-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JWPlayer-SDK-iOS-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A7D08F21A5DAFD600C4E749 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A7D08F31A5DAFD600C4E749 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -84,6 +115,33 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		572CF0902465885200F661CA /* WBCode */ = {
+			isa = PBXGroup;
+			children = (
+				572CF0A0246588AB00F661CA /* IMASettings.h */,
+				572CF0A6246588AC00F661CA /* IMASettings.m */,
+				572CF091246588AB00F661CA /* NSDictionary+Converters.h */,
+				572CF0A3246588AC00F661CA /* NSDictionary+Converters.m */,
+				572CF096246588AB00F661CA /* WBRCTAdBreak.h */,
+				572CF099246588AB00F661CA /* WBRCTAdBreak.m */,
+				572CF09D246588AB00F661CA /* WBRCTAdConfig.h */,
+				572CF09C246588AB00F661CA /* WBRCTAdConfig.m */,
+				572CF098246588AB00F661CA /* WBRCTAdRules.h */,
+				572CF0A5246588AC00F661CA /* WBRCTAdRules.m */,
+				572CF09E246588AB00F661CA /* WBRCTIMASettings.h */,
+				572CF092246588AB00F661CA /* WBRCTIMASettings.m */,
+				572CF09A246588AB00F661CA /* WBRCTMediaSource.h */,
+				572CF095246588AB00F661CA /* WBRCTMediaSource.m */,
+				572CF094246588AB00F661CA /* WBRCTPlayerConfig.h */,
+				572CF0A2246588AC00F661CA /* WBRCTPlayerConfig.m */,
+				572CF09F246588AB00F661CA /* WBRCTVideoItem.h */,
+				572CF097246588AB00F661CA /* WBRCTVideoItem.m */,
+				572CF09B246588AB00F661CA /* WBRCTVideoPlayList.h */,
+				572CF0A4246588AC00F661CA /* WBRCTVideoPlayList.m */,
+			);
+			path = WBCode;
+			sourceTree = "<group>";
+		};
 		6A7D08E51A5DAFD600C4E749 = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +163,7 @@
 		6A7D08F01A5DAFD600C4E749 /* JWPlayer-SDK-iOS-Demo */ = {
 			isa = PBXGroup;
 			children = (
+				572CF0902465885200F661CA /* WBCode */,
 				6A7D08FB1A5DAFD600C4E749 /* Main.storyboard */,
 				6A7D08F51A5DAFD600C4E749 /* AppDelegate.h */,
 				6A7D08F61A5DAFD600C4E749 /* AppDelegate.m */,
@@ -121,6 +180,7 @@
 		9769E5CB1DA8034E00BEF7FF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				572CF0B224658A7500F661CA /* UIKit.framework */,
 				99E59D2982120A9B78F61F15 /* Pods_JWPlayer_SDK_iOS_Demo.framework */,
 			);
 			name = Frameworks;
@@ -247,11 +307,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				572CF0B1246588AC00F661CA /* IMASettings.m in Sources */,
+				572CF0B0246588AC00F661CA /* WBRCTAdRules.m in Sources */,
+				572CF0A9246588AC00F661CA /* WBRCTMediaSource.m in Sources */,
+				572CF0AC246588AC00F661CA /* WBRCTAdConfig.m in Sources */,
 				118E8EDA2225BE4E006D0685 /* ObjCViewController.m in Sources */,
 				118E8ECD22259B43006D0685 /* SwiftViewController.swift in Sources */,
+				572CF0AA246588AC00F661CA /* WBRCTVideoItem.m in Sources */,
 				6A7D08FA1A5DAFD600C4E749 /* InitialViewController.m in Sources */,
+				572CF0AF246588AC00F661CA /* WBRCTVideoPlayList.m in Sources */,
+				572CF0AB246588AC00F661CA /* WBRCTAdBreak.m in Sources */,
 				6A7D08F71A5DAFD600C4E749 /* AppDelegate.m in Sources */,
 				6A7D08F41A5DAFD600C4E749 /* main.m in Sources */,
+				572CF0A7246588AC00F661CA /* WBRCTIMASettings.m in Sources */,
+				572CF0AD246588AC00F661CA /* WBRCTPlayerConfig.m in Sources */,
+				572CF0AE246588AC00F661CA /* NSDictionary+Converters.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
