@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "WBRCTVideoItem.h"
-#import <UIKit/UIKit.h>
 
 @interface WBRCTVideoPlayList : NSObject
 

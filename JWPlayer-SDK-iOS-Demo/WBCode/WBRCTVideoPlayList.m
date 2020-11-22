@@ -13,6 +13,8 @@
 
 - (instancetype)initWithData:(NSArray *) data
 {
+    NSLog(@"[WBRCTVideoPlayList::initWithData]");
+    
     NSMutableArray<WBRCTVideoItem *> *videoItems;
     
     if (data && [data count])
@@ -40,6 +42,8 @@
 
 - (instancetype)initWithJson:(id) json
 {
+    NSLog(@"[WBRCTVideoPlayList::initWithJson] JSON: %@", json);
+    
     NSData* jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
     
     NSError *error = nil;
@@ -48,7 +52,7 @@
                                 JSONObjectWithData:jsonData
                                 options:0
                                 error:&error
-                               ];
+                                ];
     
     if (!error)
     {
@@ -56,7 +60,7 @@
     }
     else
     {
-        NSLog(@"Error in parsing JSON");
+        NSLog(@"Error in parsing JSON: %@", error.description);
     }
     
     return self;
@@ -64,12 +68,16 @@
 
 - (instancetype)initWithPlaylistItem:(JWPlaylistItem *) playListItem
 {
+    NSLog(@"[WBRCTVideoPlayList::initWithPlaylistItem]");
+    
     return [self initWithPlaylistItems:[[NSArray<JWPlaylistItem *> alloc] initWithObjects:playListItem, nil]];
     
 }
 
 - (instancetype)initWithPlaylistItems:(NSArray<JWPlaylistItem *> *) playListItems
 {
+    NSLog(@"[WBRCTVideoPlayList::initWithPlaylistItems]");
+    
     NSMutableArray<WBRCTVideoItem *> *videoItems = [[NSMutableArray<WBRCTVideoItem *> alloc] initWithCapacity:playListItems.count];
     
     for (JWPlaylistItem *playListItem in playListItems)
@@ -92,6 +100,8 @@
 
 - (NSDictionary *) data
 {
+    NSLog(@"[WBRCTVideoPlayList::get_data]");
+    
     NSMutableArray<NSDictionary *> *playListItems = [NSMutableArray<NSDictionary *> new];
     
     for (WBRCTVideoItem *videoItem in self.videoItems)
@@ -100,17 +110,20 @@
     }
     
     return @{
-             @"playListItems": playListItems
-            };
+        @"playListItems": playListItems
+    };
 }
 
 - (NSData *) json
 {
+    NSLog(@"[WBRCTVideoPlayList::get_json]");
     return [NSKeyedArchiver archivedDataWithRootObject:[self data]];
 }
 
 - (NSArray<JWPlaylistItem *> *) playListItems
 {
+    NSLog(@"[WBRCTVideoPlayList::get_playListItems]");
+    
     NSMutableArray<JWPlaylistItem *> *playListItems = [NSMutableArray<JWPlaylistItem *> new];
     
     for (WBRCTVideoItem *videoItem in self.videoItems)

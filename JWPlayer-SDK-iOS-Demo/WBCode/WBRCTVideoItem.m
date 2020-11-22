@@ -14,6 +14,8 @@
 
 - (instancetype)initWithData:(NSDictionary *) data
 {
+    NSLog(@"[WBRCTVideoItem::initWithData]");
+    
     BOOL hasData = false;
     
     NSString *description;
@@ -65,12 +67,12 @@
         }
         
         hasData =  description
-                || file
-                || title
-                || mediaId
-                || (mediaSources && [mediaSources count])
-                || (adSchedule && [adSchedule count])
-                || posterImageUrl
+        || file
+        || title
+        || mediaId
+        || (mediaSources && [mediaSources count])
+        || (adSchedule && [adSchedule count])
+        || posterImageUrl
         ;
     }
     
@@ -90,6 +92,8 @@
 
 - (instancetype)initWithJson:(id) json
 {
+    NSLog(@"[WBRCTVideoItem::initWithJson] JSON: %@", json);
+    
     NSData* jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
     
     NSError *error = nil;
@@ -114,20 +118,22 @@
 
 - (instancetype)initWithPlaylistItem:(JWPlaylistItem *) playListItem
 {
+    NSLog(@"[WBRCTVideoItem::initWithPlaylistItem]");
+    
     if (   playListItem
         && playListItem.file
         && [playListItem.file length] > 3
         && (self = [super init])
-    )
+        )
     {
         self.desc    = playListItem.desc;
         self.file    = playListItem.file;
         self.mediaId = playListItem.mediaId;
         self.title   = playListItem.title;
-
+        
         if (   playListItem.image
             && [playListItem.image rangeOfString:@"http" options:NSCaseInsensitiveSearch].location != NSNotFound
-        )
+            )
         {
             self.posterImageUrl = [NSURL URLWithString:playListItem.image];
         }
@@ -172,30 +178,37 @@
 
 - (NSDictionary *) data
 {
+    NSLog(@"[WBRCTVideoItem::get_data]");
+    
     NSMutableArray<NSDictionary *> *mediaSources = [NSMutableArray<NSDictionary *> new];
     
     for (WBRCTMediaSource *src in self.mediaSources)
     {
         [mediaSources addObject:src.data];
     }
-
+    
     NSMutableArray<NSDictionary *> *adBreaks = [NSMutableArray<NSDictionary *> new];
     
     for (WBRCTAdBreak *src in self.adSchedule)
     {
         [adBreaks addObject:src.data];
     }
-
     
-    return @{
-             @"adSchedule": adBreaks
-             , @"description": self.desc
-             , @"file": self.file
-             , @"mediaId": self.mediaId
-             , @"mediaSources": mediaSources
-             , @"posterImageUrl": self.posterImageUrl ? self.posterImageUrl : @""
-             , @"title": self.title
-            };
+    NSMutableDictionary *results = [@{
+        @"description": self.desc
+        , @"file": self.file
+        , @"mediaId": self.mediaId
+        , @"mediaSources": mediaSources
+        , @"posterImageUrl": self.posterImageUrl ? self.posterImageUrl : @""
+        , @"title": self.title
+    } mutableCopy];
+    
+    if (adBreaks && [adBreaks count])
+    {
+        [results setObject:adBreaks forKey:@"adSchedule"];
+    }
+    
+    return results;
 }
 
 - (NSData *) json
@@ -205,6 +218,8 @@
 
 - (JWPlaylistItem *) playListItem
 {
+    NSLog(@"[WBRCTVideoItem::get_playListItem]");
+    
     JWPlaylistItem * playListItem = [JWPlaylistItem new];
     
     playListItem.desc    = self.desc;
@@ -218,8 +233,11 @@
     {
         [sources addObject:src.source];
     }
-
-    playListItem.sources = sources;
+    
+    if (sources && [sources count])
+    {
+        playListItem.sources = sources;
+    }
     
     NSMutableArray<JWAdBreak *> *adBreaks = [NSMutableArray<JWAdBreak *> new];
     for (WBRCTAdBreak *src in self.adSchedule)
@@ -227,9 +245,12 @@
         [adBreaks addObject:src.adBreak];
     }
     
-    playListItem.adSchedule = adBreaks;
-
-    return playListItem;    
+    if (adBreaks && [adBreaks count])
+    {
+        playListItem.adSchedule = adBreaks;
+    }
+    
+    return playListItem;
 }
 
 @end

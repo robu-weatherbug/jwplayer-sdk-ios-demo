@@ -6,7 +6,6 @@
 //  Copyright © 2019 WeatherBug. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "WBRCTAdBreak.h"
 #import "WBRCTMediaSource.h"

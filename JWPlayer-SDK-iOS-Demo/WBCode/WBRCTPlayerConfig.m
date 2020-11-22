@@ -8,6 +8,7 @@
 
 #import "WBRCTPlayerConfig.h"
 #import "WBRCTVideoItem.h"
+#import "WBRCTVideoPlayList.h"
 #import "NSDictionary+Converters.h"
 
 
@@ -28,8 +29,10 @@ static const BOOL kPreload       = YES;
 
 - (instancetype)initWithData:(NSDictionary *) data
 {
+    NSLog(@"[WBRCTPlayerConfig::initWithData]");
+    
     BOOL hasData = false;
-
+    
     NSDictionary *advertising;
     NSNumber *autoStart;
     NSNumber *controls;
@@ -39,7 +42,8 @@ static const BOOL kPreload       = YES;
     NSNumber *nextUpOffset;
     NSNumber *playlistIndex;
     NSNumber *preload;
-
+    NSArray *playlist;
+    
     if (data != nil && [data count])
     {
         advertising   = [data parseDictionaryForKey:@"advertising"];
@@ -49,21 +53,24 @@ static const BOOL kPreload       = YES;
         muted         = [data parseBoolValueForKey:@"muted"];
         nextUpDisplay = [data parseBoolValueForKey:@"nextUpDisplay"];
         nextUpOffset  = [data parseIntegerValueForKey:@"nextUpOffset"];
-        playlistIndex = [data parseBoolValueForKey:@"playlistIndex"];
+        playlistIndex = [data parseIntegerValueForKey:@"playlistIndex"];
         preload       = [data parseBoolValueForKey:@"preload"];
-
+        
+        playlist      = [data parseArrayForKey:@"playlist"];
+        
         hasData = (advertising && [advertising count])
-                || autoStart     != nil
-                || controls      != nil
-                || fullScreen    != nil
-                || muted         != nil
-                || nextUpDisplay != nil
-                || nextUpOffset  != nil
-                || playlistIndex != nil
-                || preload       != nil
+        || autoStart     != nil
+        || controls      != nil
+        || fullScreen    != nil
+        || muted         != nil
+        || nextUpDisplay != nil
+        || nextUpOffset  != nil
+        || playlistIndex != nil
+        || preload       != nil
+        || (playlist && [playlist count])
         ;
     }
-
+    
     if (hasData && (self = [super init]))
     {
         self.autoStart     = autoStart     != nil ? autoStart.boolValue        : kAutoStart;
@@ -79,29 +86,40 @@ static const BOOL kPreload       = YES;
         {
             self.advertising = [[WBRCTAdConfig alloc] initWithData:advertising];
         }
+        
+        if (playlist && [playlist count])
+        {
+            WBRCTVideoPlayList *videoPlayList = [[WBRCTVideoPlayList alloc] initWithData:playlist];
+            if (videoPlayList && videoPlayList.playListItems && [videoPlayList.playListItems count])
+            {
+                self.playlist = videoPlayList.playListItems;
+            }
+        }
     }
     else
     {
         self = WBRCTPlayerConfig.defaultConfig;
     }
-
+    
     _jwConfig = [WBRCTPlayerConfig convertToJWConfig:self];
-
+    
     return self;
 }
 
 - (instancetype)initWithJson:(id) json
 {
+    NSLog(@"[WBRCTPlayerConfig::initWithJson] JSON: %@", json);
+    
     NSData* jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
-
+    
     NSError *error = nil;
     NSDictionary *jsonObject = [
-                                 NSJSONSerialization
-                                 JSONObjectWithData:jsonData
-                                 options:0
-                                 error:&error
+                                NSJSONSerialization
+                                JSONObjectWithData:jsonData
+                                options:0
+                                error:&error
                                 ];
-
+    
     if (!error)
     {
         self = [[WBRCTPlayerConfig alloc] initWithData:jsonObject];
@@ -110,12 +128,14 @@ static const BOOL kPreload       = YES;
     {
         NSLog(@"Error in parsing JSON");
     }
-
+    
     return self;
 }
 
 - (instancetype)initWithConfig:(JWConfig *) config
 {
+    NSLog(@"[WBRCTPlayerConfig::initWithConfig]");
+    
     if (config && (self = [super init]))
     {
         self.autoStart     = config.autostart;
@@ -124,20 +144,23 @@ static const BOOL kPreload       = YES;
         self.muted         = kMuted;
         self.nextUpDisplay = config.nextUpDisplay;
         self.nextUpOffset  = config.nextupOffset;
-        self.playlistIndex = kPlaylistIndex;
+        self.playlistIndex = config.playlistIndex;
         self.preload       = config.preload;
+        self.playlist      = config.playlist;
         
         if (config.advertising)
         {
             self.advertising = [[WBRCTAdConfig alloc] initWithAdConfig:config.advertising];
         }
     }
-
+    
     return self;
 }
 
 + (WBRCTPlayerConfig *) defaultConfig
 {
+    NSLog(@"[WBRCTPlayerConfig::get_defaultConfig]");
+    
     static WBRCTPlayerConfig *defaultConfig = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -151,26 +174,28 @@ static const BOOL kPreload       = YES;
         defaultConfig.playlistIndex = kPlaylistIndex;
         defaultConfig.preload       = kPreload;
     });
-
+    
     /*
-    WBRCTPlayerConfig *defaultConfig = [[WBRCTPlayerConfig alloc] init];
-    defaultConfig.autoStart     = kAutoStart;
-    defaultConfig.controls      = kControls;
-    defaultConfig.fullScreen    = kFullScreen;
-    defaultConfig.muted         = kMuted;
-    defaultConfig.nextUpDisplay = kNextUpDisplay;
-    defaultConfig.nextUpOffset  = kNextUpOffset;
-    defaultConfig.playlistIndex = kPlaylistIndex;
-    defaultConfig.preload       = kPreload;
-    */
-
+     WBRCTPlayerConfig *defaultConfig = [[WBRCTPlayerConfig alloc] init];
+     defaultConfig.autoStart     = kAutoStart;
+     defaultConfig.controls      = kControls;
+     defaultConfig.fullScreen    = kFullScreen;
+     defaultConfig.muted         = kMuted;
+     defaultConfig.nextUpDisplay = kNextUpDisplay;
+     defaultConfig.nextUpOffset  = kNextUpOffset;
+     defaultConfig.playlistIndex = kPlaylistIndex;
+     defaultConfig.preload       = kPreload;
+     */
+    
     return defaultConfig;
 }
 
 + (JWConfig *)convertToJWConfig:(WBRCTPlayerConfig *) playerConfig
 {
+    NSLog(@"[WBRCTPlayerConfig::convertToJWConfig]");
+    
     JWConfig *jwConfig = [[JWConfig alloc] init];
-
+    
     if (playerConfig)
     {
         jwConfig.advertising   = playerConfig.advertising ? playerConfig.advertising.adConfig : nil;
@@ -178,7 +203,11 @@ static const BOOL kPreload       = YES;
         jwConfig.controls      = playerConfig.controls;
         jwConfig.nextUpDisplay = playerConfig.nextUpDisplay;
         jwConfig.nextupOffset  = playerConfig.nextUpOffset;
-        jwConfig.preload       = playerConfig.preload ? JWPreloadNone : JWPreloadAuto;
+        jwConfig.preload       = playerConfig.preload  ? JWPreloadNone : JWPreloadAuto;
+        jwConfig.playlist      = playerConfig.playlist ? playerConfig.playlist : nil;
+        
+        // Within the playlist, the first index is 0. If the playlistIndex value is negative, the index starts counting from the end of the playlist.
+        jwConfig.playlistIndex = playerConfig.playlistIndex;
     }
     else
     {
@@ -188,7 +217,7 @@ static const BOOL kPreload       = YES;
         jwConfig.nextupOffset  = kNextUpOffset;
         jwConfig.preload       = kPreload ? JWPreloadNone : JWPreloadAuto;
     }
-
+    
     return jwConfig;
 }
 

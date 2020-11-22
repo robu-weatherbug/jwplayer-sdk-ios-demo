@@ -13,6 +13,8 @@
 
 - (instancetype)initWithData:(NSDictionary *) data
 {
+    NSLog(@"[WBRCTMediaSource::initWithData]");
+    
     BOOL hasData = false;
     
     NSString *file;
@@ -44,14 +46,16 @@
 
 - (instancetype)initWithJson:(id) json
 {
+    NSLog(@"[WBRCTMediaSource::initWithJson] JSON: %@", json);
+    
     NSData* jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
     
     NSError *error = nil;
     NSDictionary *jsonObject = [
-                                 NSJSONSerialization
-                                 JSONObjectWithData:jsonData
-                                 options:0
-                                 error:&error
+                                NSJSONSerialization
+                                JSONObjectWithData:jsonData
+                                options:0
+                                error:&error
                                 ];
     
     if (error)
@@ -68,6 +72,8 @@
 
 - (instancetype)initWithSource:(JWSource *) source
 {
+    NSLog(@"[WBRCTMediaSource::initWithSource]");
+    
     BOOL hasData = source && source.file && [source.file length];
     
     if (hasData && (self = [super init]))
@@ -82,20 +88,26 @@
 
 - (NSDictionary *) data
 {
+    NSLog(@"[WBRCTMediaSource::get_data]");
+    
     return @{
-             @"file": self.file
-             , @"qualityLabel": self.qualityLabel
-             , @"isDefaultQuality": @(self.isDefaultQuality)
-            };
+        @"file": self.file
+        , @"qualityLabel": self.qualityLabel
+        , @"isDefaultQuality": @(self.isDefaultQuality)
+    };
 }
 
 - (NSData *) json
 {
+    NSLog(@"[WBRCTMediaSource::get_json]");
+    
     return [NSKeyedArchiver archivedDataWithRootObject:[self data]];
 }
 
 - (JWSource *) source
 {
+    NSLog(@"[WBRCTMediaSource::get_source]");
+    
     return [[JWSource alloc] initWithFile:self.file label:self.qualityLabel isDefault:self.isDefaultQuality];
 }
 

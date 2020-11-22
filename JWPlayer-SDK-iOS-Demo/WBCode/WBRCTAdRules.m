@@ -13,6 +13,8 @@
 
 - (instancetype)initWithData:(NSDictionary *) data
 {
+    NSLog(@"[WBRCTAdRules::initWithData]");
+    
     BOOL hasData = NO;
     
     NSNumber *frequency;
@@ -28,15 +30,16 @@
         timeBetweenAds = [data parseIntegerValueForKey:@"timeBetweenAds"];
         
         hasData = frequency       != nil
-                || startOn        != nil
-                || startOnSeek    != nil
-                || timeBetweenAds != nil
+        || startOn        != nil
+        || startOnSeek    != nil
+        || timeBetweenAds != nil
         ;
     }
     
     if (hasData && (self = [super init]))
     {
         self.frequency      = frequency      ? frequency.integerValue            : 0;
+        // The first playlist item that will allow ad playback, index starting at 1.
         self.startOn        = startOn        ? startOn.integerValue              : 1;
         self.startOnSeek    = startOnSeek    ? (JWAdShown)frequency.integerValue : JWAdShownNone;
         self.timeBetweenAds = timeBetweenAds ? timeBetweenAds.integerValue       : 0;
@@ -47,6 +50,8 @@
 
 - (instancetype)initWithJson:(id) json
 {
+    NSLog(@"[WBRCTAdRules::initWithJson] JSON: %@", json);
+    
     NSData* jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
     
     NSError *error = nil;
@@ -55,7 +60,7 @@
                                 JSONObjectWithData:jsonData
                                 options:0
                                 error:&error
-                               ];
+                                ];
     
     if (error)
     {
@@ -71,6 +76,8 @@
 
 - (instancetype)initWithAdRules:(JWAdRules *) adRules
 {
+    NSLog(@"[WBRCTAdRules::initWithAdRules]");
+    
     if (adRules && (self = [super init]))
     {
         self.frequency      = adRules.frequency;
@@ -84,12 +91,14 @@
 
 - (NSDictionary *) data
 {
+    NSLog(@"[WBRCTAdRules::get_data]");
+    
     return @{
-             @"frequency":        @(self.frequency)
-             , @"startOn":        @(self.startOn)
-             , @"startOnSeek":    @(self.startOnSeek)
-             , @"timeBetweenAds": @(self.timeBetweenAds)
-            };
+        @"frequency":        @(self.frequency)
+        , @"startOn":        @(self.startOn)
+        , @"startOnSeek":    @(self.startOnSeek)
+        , @"timeBetweenAds": @(self.timeBetweenAds)
+    };
 }
 
 - (NSData *) json
@@ -99,10 +108,21 @@
 
 - (JWAdRules *) adRules
 {
+    NSLog(@"[WBRCTAdRules::get_adRules]");
+    
     JWAdRules *adRules = [[JWAdRules alloc] init];
     
+    NSLog(@"[WBRCTAdRules::get_adRules] self.startOn: %lu; adRules.startOn: %lu", (unsigned long)self.startOn, (unsigned long)adRules.startOn);
+    
     adRules.frequency      = self.frequency;
+    
+    // The first playlist item that will allow ad playback, index starting at 1.
+    // Within the playlist, the first index is 0. If the playlistIndex value is negative, the index starts counting from the end of the playlist.
+    // Therfore, playlistIndex = 0 means startOn = 1
+    // Therfore, playlistIndex = 1 means startOn = 2
+    // Therfore, playlistIndex = 2 means startOn = 3
     adRules.startOn        = self.startOn;
+    
     adRules.startOnSeek    = self.startOnSeek;
     adRules.timeBetweenAds = self.timeBetweenAds;
     

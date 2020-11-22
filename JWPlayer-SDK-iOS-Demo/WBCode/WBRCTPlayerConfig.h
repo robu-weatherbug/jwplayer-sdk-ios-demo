@@ -21,6 +21,7 @@
 @property (nonatomic, assign) NSInteger nextUpOffset;
 @property (nonatomic, assign) NSInteger playlistIndex;
 @property (nonatomic) BOOL preload;
+@property (nonatomic, retain) NSArray<JWPlaylistItem *> *playlist;
 
 @property (nonatomic, retain, readonly) JWConfig *jwConfig;
 

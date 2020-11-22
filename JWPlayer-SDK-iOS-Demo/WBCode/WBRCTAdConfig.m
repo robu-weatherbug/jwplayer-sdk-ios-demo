@@ -13,6 +13,8 @@
 
 - (instancetype)initWithData:(NSDictionary *) data
 {
+    NSLog(@"[WBRCTAdConfig::initWithData]");
+    
     BOOL hasData = NO;
     
     NSString *adMessage;
@@ -65,16 +67,16 @@
         }
         
         hasData =  adMessage
-                || adVmap
-                || client != nil
-                || googimaSettings
-                || rules
-                || (adBreaks && [adBreaks count])
-                || skipMessage
-                || skipOffset != nil
-                || skipText
-                || tag
-                || vpaidControls != nil
+        || adVmap
+        || client != nil
+        || googimaSettings
+        || rules
+        || (adBreaks && [adBreaks count])
+        || skipMessage
+        || skipOffset != nil
+        || skipText
+        || tag
+        || vpaidControls != nil
         ;
     }
     
@@ -98,6 +100,8 @@
 
 - (instancetype)initWithJson:(id) json
 {
+    NSLog(@"[WBRCTAdConfig::initWithJson] JSON: %@", json);
+    
     NSData* jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
     
     NSError *error = nil;
@@ -106,7 +110,7 @@
                                 JSONObjectWithData:jsonData
                                 options:0
                                 error:&error
-                               ];
+                                ];
     
     if (error)
     {
@@ -122,16 +126,18 @@
 
 - (instancetype)initWithAdConfig:(JWAdConfig *) adConfig
 {
+    NSLog(@"[WBRCTAdConfig::initWithAdConfig]");
+    
     BOOL hasData =     adConfig
-                    || (adConfig.adMessage && [adConfig.adMessage length])
-                    || (adConfig.adVmap    && [adConfig.adVmap length])
-                    || (adConfig.client == JWAdClientVast || adConfig.client == JWAdClientGoogima)
-                    || adConfig.googimaSettings
-                    || adConfig.rules
-                    || (adConfig.schedule    && [adConfig.schedule count])
-                    || (adConfig.skipMessage && [adConfig.skipMessage length])
-                    || (adConfig.skipText    && [adConfig.skipText length])
-                    || (adConfig.tag         && [adConfig.tag length])
+    || (adConfig.adMessage && [adConfig.adMessage length])
+    || (adConfig.adVmap    && [adConfig.adVmap length])
+    || (adConfig.client == JWAdClientVast || adConfig.client == JWAdClientGoogima)
+    || adConfig.googimaSettings
+    || adConfig.rules
+    || (adConfig.schedule    && [adConfig.schedule count])
+    || (adConfig.skipMessage && [adConfig.skipMessage length])
+    || (adConfig.skipText    && [adConfig.skipText length])
+    || (adConfig.tag         && [adConfig.tag length])
     ;
     
     if (hasData && (self = [super init]))
@@ -171,28 +177,34 @@
 
 - (NSDictionary *) data
 {
+    NSLog(@"[WBRCTAdConfig::get_data]");
+    
     return @{
-             @"adMessage":         self.adMessage
-             , @"adVmap":          self.adVmap
-             , @"client":          @(self.client)
-             , @"googimaSettings": self.googimaSettings
-             , @"rules":           self.rules
-             , @"schedule":        self.schedule
-             , @"skipMessage":     self.skipMessage
-             , @"skipOffset":      @(self.skipOffset)
-             , @"skipText":        self.skipText
-             , @"tag":             self.tag
-             , @"vpaidControls":   @(self.vpaidControls)
-            };
+        @"adMessage":         self.adMessage
+        , @"adVmap":          self.adVmap
+        , @"client":          @(self.client)
+        , @"googimaSettings": self.googimaSettings
+        , @"rules":           self.rules
+        , @"schedule":        self.schedule
+        , @"skipMessage":     self.skipMessage
+        , @"skipOffset":      @(self.skipOffset)
+        , @"skipText":        self.skipText
+        , @"tag":             self.tag
+        , @"vpaidControls":   @(self.vpaidControls)
+    };
 }
 
 - (NSData *) json
 {
+    NSLog(@"[WBRCTAdConfig::get_json]");
+    
     return [NSKeyedArchiver archivedDataWithRootObject:[self data]];
 }
-//initWithAdConfig
+
 - (JWAdConfig *) adConfig
 {
+    NSLog(@"[WBRCTAdConfig::get_adConfig]");
+    
     JWAdConfig *adConfig = [[JWAdConfig alloc] init];
     
     adConfig.adMessage       = self.adMessage;

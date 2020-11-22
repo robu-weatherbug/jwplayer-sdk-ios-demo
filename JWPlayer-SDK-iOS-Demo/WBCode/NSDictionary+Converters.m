@@ -23,7 +23,7 @@
     {
         return nil;
     }
-
+    
     return [NSNumber numberWithBool:[[self objectForKey:key] boolValue]];
 }
 
@@ -34,7 +34,7 @@
     {
         number = [self parseBoolValueForKey:defaultKey];
     }
-
+    
     return number;
 }
 
@@ -55,7 +55,7 @@
     {
         dictionary = [self parseDictionaryForKey:defaultKey];
     }
-
+    
     return dictionary;
 }
 

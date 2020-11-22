@@ -14,6 +14,8 @@
 
 - (instancetype)initWithData:(NSDictionary *) data
 {
+    NSLog(@"[WBRCTIMASettings::initWithData]");
+    
     BOOL hasData = NO;
     
     NSNumber *autoPlayAdBreaks;
@@ -39,14 +41,14 @@
         ppid                     = [data parseStringForKey:@"ppid"];
         
         hasData = autoPlayAdBreaks          != nil
-                || disableNowPlayingInfo    != nil
-                || enableBackgroundPlayback != nil
-                || enableDebugMode          != nil
-                || language
-                || maxRedirects             != nil
-                || playerType
-                || playerVersion
-                || ppid
+        || disableNowPlayingInfo    != nil
+        || enableBackgroundPlayback != nil
+        || enableDebugMode          != nil
+        || language
+        || maxRedirects             != nil
+        || playerType
+        || playerVersion
+        || ppid
         ;
     }
     
@@ -68,6 +70,8 @@
 
 - (instancetype)initWithJson:(id) json
 {
+    NSLog(@"[WBRCTIMASettings::initWithJson] JSON: %@", json);
+    
     NSData* jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
     
     NSError *error = nil;
@@ -76,7 +80,7 @@
                                 JSONObjectWithData:jsonData
                                 options:0
                                 error:&error
-                               ];
+                                ];
     
     if (error)
     {
@@ -93,6 +97,8 @@
 
 - (instancetype)initWithIMASettings:(IMASettings *) imaSettings
 {
+    NSLog(@"[WBRCTIMASettings::initWithIMASettings]");
+    
     if (imaSettings && (self = [super init]))
     {
         self.autoPlayAdBreaks         = imaSettings.autoPlayAdBreaks;
@@ -111,26 +117,32 @@
 
 - (NSDictionary *) data
 {
+    NSLog(@"[WBRCTIMASettings::get_data]");
+    
     return @{
-             @"autoPlayAdBreaks":           @(self.autoPlayAdBreaks)
-             , @"disableNowPlayingInfo":    @(self.disableNowPlayingInfo)
-             , @"enableBackgroundPlayback": @(self.enableBackgroundPlayback)
-             , @"enableDebugMode":          @(self.enableDebugMode)
-             , @"language":                 self.language
-             , @"maxRedirects":             @(self.maxRedirects)
-             , @"playerType":               self.playerType
-             , @"playerVersion":            self.playerVersion
-             , @"ppid":                     self.ppid
-            };
+        @"autoPlayAdBreaks":           @(self.autoPlayAdBreaks)
+        , @"disableNowPlayingInfo":    @(self.disableNowPlayingInfo)
+        , @"enableBackgroundPlayback": @(self.enableBackgroundPlayback)
+        , @"enableDebugMode":          @(self.enableDebugMode)
+        , @"language":                 self.language
+        , @"maxRedirects":             @(self.maxRedirects)
+        , @"playerType":               self.playerType
+        , @"playerVersion":            self.playerVersion
+        , @"ppid":                     self.ppid
+    };
 }
 
 - (NSData *) json
 {
+    NSLog(@"[WBRCTIMASettings::get_json]");
+    
     return [NSKeyedArchiver archivedDataWithRootObject:[self data]];
 }
 
 - (IMASettings *) imaSettings
 {
+    NSLog(@"[WBRCTIMASettings::get_imaSettings]");
+    
     IMASettings *imaSettings = [[IMASettings alloc] init];
     
     if (imaSettings)
