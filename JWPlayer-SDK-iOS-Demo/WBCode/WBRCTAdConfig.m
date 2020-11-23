@@ -128,16 +128,16 @@
 {
     NSLog(@"[WBRCTAdConfig::initWithAdConfig]");
     
-    BOOL hasData =     adConfig
-    || (adConfig.adMessage && [adConfig.adMessage length])
-    || (adConfig.adVmap    && [adConfig.adVmap length])
-    || (adConfig.client == JWAdClientVast || adConfig.client == JWAdClientGoogima)
-    || adConfig.googimaSettings
-    || adConfig.rules
-    || (adConfig.schedule    && [adConfig.schedule count])
-    || (adConfig.skipMessage && [adConfig.skipMessage length])
-    || (adConfig.skipText    && [adConfig.skipText length])
-    || (adConfig.tag         && [adConfig.tag length])
+    BOOL hasData = adConfig
+                || (adConfig.adMessage && [adConfig.adMessage length])
+                || (adConfig.adVmap    && [adConfig.adVmap length])
+                || (adConfig.client == JWAdClientVast || adConfig.client == JWAdClientGoogima)
+                || adConfig.googimaSettings
+                || adConfig.rules
+                || (adConfig.schedule    && [adConfig.schedule count])
+                || (adConfig.skipMessage && [adConfig.skipMessage length])
+                || (adConfig.skipText    && [adConfig.skipText length])
+                || (adConfig.tag         && [adConfig.tag length])
     ;
     
     if ((self = [super init]) && hasData)
@@ -159,7 +159,7 @@
         if (adConfig.schedule && [adConfig.schedule count])
         {
             NSMutableArray<WBRCTAdBreak *> *schedule = [NSMutableArray<WBRCTAdBreak *> new];
-            for (JWAdBreak *adBreak in self.schedule)
+            for (JWAdBreak *adBreak in adConfig.schedule)
             {
                 [schedule addObject:[[WBRCTAdBreak alloc] initWithAdBreak:adBreak]];
             }
