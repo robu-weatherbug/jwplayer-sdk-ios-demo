@@ -162,6 +162,8 @@ static const BOOL kPreload       = YES;
         }
     }
     
+    _jwConfig = [WBRCTPlayerConfig convertToJWConfig:self];
+    
     return self;
 }
 
@@ -194,7 +196,8 @@ static const BOOL kPreload       = YES;
             self.advertising = [[WBRCTAdConfig alloc] initWithAdConfig:config.advertising];
         }
     }
-
+    
+    _jwConfig = [WBRCTPlayerConfig convertToJWConfig:self];
     
     return self;
 }
@@ -203,7 +206,7 @@ static const BOOL kPreload       = YES;
 {
     NSLog(@"[WBRCTPlayerConfig::initWithConfig:andPlaylistItem]");
     
-    return self;
+    return [self initWithConfig:config andPlaylist:@[playistItem]];
 }
 
 + (WBRCTPlayerConfig *) defaultConfig
@@ -253,15 +256,15 @@ static const BOOL kPreload       = YES;
         jwConfig.nextUpDisplay = playerConfig.nextUpDisplay;
         jwConfig.nextupOffset  = playerConfig.nextUpOffset;
         jwConfig.preload       = playerConfig.preload  ? JWPreloadNone : JWPreloadAuto;
+        // Within the playlist, the first index is 0. If the playlistIndex value is negative, the index starts counting from the end of the playlist.
+        jwConfig.playlistIndex = playerConfig.playlistIndex;
         
         if (playerConfig.playlist && [playerConfig.playlist count])
         {
             WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithPlaylist:playerConfig.playlist];
             [jwConfig setPlaylist:videoPlaylist.playListItems];
         }
-        
-        // Within the playlist, the first index is 0. If the playlistIndex value is negative, the index starts counting from the end of the playlist.
-        jwConfig.playlistIndex = playerConfig.playlistIndex;
+
     }
     else
     {
