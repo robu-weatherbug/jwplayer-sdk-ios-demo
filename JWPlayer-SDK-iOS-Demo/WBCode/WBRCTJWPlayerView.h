@@ -53,6 +53,11 @@
 // Video playlist from JS side
 @property (nonatomic, retain) WBRCTVideoPlayList *videoPlayList;
 
+@property(nonatomic, assign) id delegate;
+@property(nonatomic, assign) SEL onFirstFrame;
+
+
+//- (void) onFirstFrame:(JWEvent<JWFirstFrameEvent> *)event
 
 /*
 

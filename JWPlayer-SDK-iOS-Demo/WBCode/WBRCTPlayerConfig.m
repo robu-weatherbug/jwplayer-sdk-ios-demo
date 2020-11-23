@@ -89,7 +89,8 @@ static const BOOL kPreload       = YES;
         
         if (playlist && [playlist count])
         {
-            WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithPlaylistItems:playlist];
+            WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithData:playlist];
+            //WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithPlaylistItems:playlist];
             if (videoPlaylist && videoPlaylist.playlist && [videoPlaylist.playlist count])
             {
                 self.playlist = [videoPlaylist.playlist copy];

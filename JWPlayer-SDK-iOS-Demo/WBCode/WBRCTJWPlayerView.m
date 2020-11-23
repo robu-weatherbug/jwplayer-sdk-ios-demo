@@ -46,6 +46,9 @@ static const CGFloat kDefaultVolume   = 0.0f;
 
 @synthesize playerConfigNative  = _playerConfigNative;
 
+@synthesize delegate      = _delegate;
+@synthesize onFirstFrame  = _onFirstFrame;
+
 
 /*
 - (instancetype) initWithEventDispatcher:(RCTEventDispatcher *) eventDispatcher
@@ -582,6 +585,11 @@ static const CGFloat kDefaultVolume   = 0.0f;
 - (void) onFirstFrame:(JWEvent<JWFirstFrameEvent> *)event
 {
     NSLog(@"[WBRCTJWPlayerView::onFirstFrame]");
+    //@property(nonatomic, assign) SEL onFirstFrame;
+    if([self.delegate respondsToSelector:@selector(onFirstFrame:)])
+    {
+        [self.delegate performSelector:@selector(onFirstFrame:) withObject:@(_player.playlistIndex)];
+    }
 }
 
 - (void) onPlay:(JWEvent<JWStateChangeEvent> *)event;
@@ -658,7 +666,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
 }
 - (void) onPlaylistItem:(JWEvent<JWPlaylistItemEvent> *)event
 {
-    NSLog(@"[WBRCTJWPlayerView::onPlaylistItem]");
+    NSLog(@"[WBRCTJWPlayerView::onPlaylistItem] Player Playlist Index: %ld; Event Playlist Index: %ld", _player.playlistIndex, event.index);
 }
 - (void) onPlaylistComplete
 {

@@ -67,16 +67,16 @@
         }
         
         hasData =  adMessage
-        || adVmap
-        || client != nil
-        || googimaSettings
-        || rules
-        || (adBreaks && [adBreaks count])
-        || skipMessage
-        || skipOffset != nil
-        || skipText
-        || tag
-        || vpaidControls != nil
+                || adVmap
+                || client != nil
+                || googimaSettings
+                || rules
+                || (adBreaks && [adBreaks count])
+                || skipMessage
+                || skipOffset != nil
+                || skipText
+                || tag
+                || vpaidControls != nil
         ;
     }
     
