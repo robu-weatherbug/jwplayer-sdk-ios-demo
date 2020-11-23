@@ -21,11 +21,14 @@
 #import "WBRCTPlayerConfig.h"
 #import "WBRCTVideoPlayList.h"
 #import "WBRCTJWPlayerView.h"
+#import "WBRCTVideoItem.h"
 
 @interface ObjCViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *playerContainerView;
 @property (nonatomic) WBRCTJWPlayerView *jwPlayerView;
+
+- (void) addAdvertisingToPlaylist:(WBRCTPlayerConfig *)playerConfig toPlaylist:(WBRCTVideoPlayList *) videoPlayList;
 
 @end
 
@@ -104,13 +107,14 @@
     config.autostart = YES;
     [config setPlaylistIndex:3];
 
-    WBRCTPlayerConfig *playerConfig = [[WBRCTPlayerConfig alloc] initWithJson:playerConfigJSON_WithPlaylist];
+    //WBRCTPlayerConfig *playerConfig = [[WBRCTPlayerConfig alloc] initWithJson:playerConfigJSON_WithPlaylist];
     WBRCTPlayerConfig *playerConfigNative = [[WBRCTPlayerConfig alloc] initWithConfig:config];
+    [self addAdvertisingToPlaylist:playerConfigNative];
     
     _jwPlayerView = [[WBRCTJWPlayerView alloc] init];
-    //[_jwPlayerView setPlayerConfig:playerConfigNative];
+    [_jwPlayerView setPlayerConfig:playerConfigNative];
     
-    [_jwPlayerView setPlayerConfigNative:config];
+    //[_jwPlayerView setPlayerConfigNative:config];
 
     
     //[_jwPlayerView setPlayerConfig:playerConfig];
@@ -140,6 +144,41 @@
     [self.playerContainerView addSubview:_jwPlayerView];
     [_jwPlayerView constrainToSuperview];
     //[_jwPlayerView setPlaylistIndex:3];
+}
+
+- (void) addAdvertisingToPlaylist:(WBRCTPlayerConfig *)playerConfig
+{
+    if (   playerConfig
+        && playerConfig.advertising
+        && playerConfig.advertising.schedule
+        && [playerConfig.advertising.schedule count]
+        && playerConfig.playlist
+        && [playerConfig.playlist count]
+    )
+    {
+        for (WBRCTVideoItem *videoItem in playerConfig.playlist)
+        {
+            videoItem.adSchedule = [playerConfig.advertising.schedule copy];
+        }
+    }
+}
+
+- (void) addAdvertisingToPlaylist:(WBRCTPlayerConfig *)playerConfig toPlaylist:(WBRCTVideoPlayList *) videoPlayList
+{
+    if (   playerConfig
+        && playerConfig.advertising
+        && playerConfig.advertising.schedule
+        && [playerConfig.advertising.schedule count]
+        && videoPlayList
+        && videoPlayList.playlist
+        && [videoPlayList.playlist count]
+    )
+    {
+        for (WBRCTVideoItem *videoItem in videoPlayList.playlist)
+        {
+            videoItem.adSchedule = [playerConfig.advertising.schedule copy];
+        }
+    }
 }
 
 /*

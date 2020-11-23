@@ -11,13 +11,13 @@
 
 @interface WBRCTVideoPlayList : NSObject
 
-@property (nonatomic, copy) NSArray<WBRCTVideoItem *> *videoItems;
+@property (nonatomic, copy) NSArray<WBRCTVideoItem *> *playlist;
 
 - (instancetype)initWithData:(NSArray *) data;
 - (instancetype)initWithJson:(id) json;
+- (instancetype)initWithPlaylist:(NSArray<WBRCTVideoItem *> *) playlist;
 - (instancetype)initWithPlaylistItem:(JWPlaylistItem *) playListItem;
 - (instancetype)initWithPlaylistItems:(NSArray<JWPlaylistItem *> *) playListItems;
-
 
 - (NSDictionary *) data;
 - (NSData *) json;

@@ -41,18 +41,18 @@
         ppid                     = [data parseStringForKey:@"ppid"];
         
         hasData = autoPlayAdBreaks          != nil
-        || disableNowPlayingInfo    != nil
-        || enableBackgroundPlayback != nil
-        || enableDebugMode          != nil
-        || language
-        || maxRedirects             != nil
-        || playerType
-        || playerVersion
-        || ppid
+                || disableNowPlayingInfo    != nil
+                || enableBackgroundPlayback != nil
+                || enableDebugMode          != nil
+                || language
+                || maxRedirects             != nil
+                || playerType
+                || playerVersion
+                || ppid
         ;
     }
     
-    if (hasData && (self = [super init]))
+    if ((self = [super init]) && hasData)
     {
         self.autoPlayAdBreaks         = autoPlayAdBreaks         ? autoPlayAdBreaks.boolValue         : YES;
         self.disableNowPlayingInfo    = disableNowPlayingInfo    ? disableNowPlayingInfo.boolValue    : NO;
@@ -99,7 +99,7 @@
 {
     NSLog(@"[WBRCTIMASettings::initWithIMASettings]");
     
-    if (imaSettings && (self = [super init]))
+    if ((self = [super init]) && imaSettings)
     {
         self.autoPlayAdBreaks         = imaSettings.autoPlayAdBreaks;
         self.disableNowPlayingInfo    = imaSettings.disableNowPlayingInfo;

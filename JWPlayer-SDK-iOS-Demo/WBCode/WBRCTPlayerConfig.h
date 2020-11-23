@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <JWPlayer_iOS_SDK/JWConfig.h>
 #import "WBRCTAdConfig.h"
+#import "WBRCTVideoPlayList.h"
 
 @interface WBRCTPlayerConfig : NSObject
 
@@ -21,13 +22,14 @@
 @property (nonatomic, assign) NSInteger nextUpOffset;
 @property (nonatomic, assign) NSInteger playlistIndex;
 @property (nonatomic) BOOL preload;
-@property (nonatomic, retain) NSArray<JWPlaylistItem *> *playlist;
-
+@property (nonatomic, retain) NSArray<WBRCTVideoItem *> *playlist;
 @property (nonatomic, retain, readonly) JWConfig *jwConfig;
 
 - (instancetype)initWithData:(NSDictionary *) data;
 - (instancetype)initWithJson:(id) json;
 - (instancetype)initWithConfig:(JWConfig *) config;
+- (instancetype)initWithConfig:(JWConfig *) config andPlaylist:(NSArray<JWPlaylistItem *> *) playlist;
+- (instancetype)initWithConfig:(JWConfig *) config andPlayistItem:(JWPlaylistItem *) playistItem;
 
 + (WBRCTPlayerConfig *) defaultConfig;
 

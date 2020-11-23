@@ -381,7 +381,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
     {
         for (JWPlaylistItem *playlistItem in playerConfig.playlist)
         {
-            playlistItem.adSchedule = playerConfig.advertising.schedule.copy;
+            playlistItem.adSchedule = [playerConfig.advertising.schedule copy];
         }
     }
      */
@@ -1122,13 +1122,13 @@ static const CGFloat kDefaultVolume   = 0.0f;
         
         if (
             self.videoPlayList
-            && self.videoPlayList.videoItems
-            && self.videoPlayList.videoItems.count
+            && self.videoPlayList.playlist
+            && [self.videoPlayList.playlist count]
             )
         {
-            if ([self.videoPlayList.videoItems count] == 1)
+            if ([self.videoPlayList.playlist count] == 1)
             {
-                WBRCTVideoItem *videoItem = self.videoPlayList.videoItems[0];
+                WBRCTVideoItem *videoItem = self.videoPlayList.playlist[0];
                 NSMutableArray *sources   = [NSMutableArray new];
                 
                 for (WBRCTMediaSource *source in videoItem.mediaSources)
@@ -1166,7 +1166,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
             else
             {
                 NSMutableArray *playListItems = [NSMutableArray new];
-                for (WBRCTVideoItem *videoItem in self.videoPlayList.videoItems)
+                for (WBRCTVideoItem *videoItem in self.videoPlayList.playlist)
                 {
                     JWPlaylistItem *playlistItem = [JWPlaylistItem new];
                     NSMutableArray *sources = [NSMutableArray new];

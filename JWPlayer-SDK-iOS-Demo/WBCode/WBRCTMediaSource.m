@@ -30,7 +30,7 @@
         hasData = file || qualityLabel || isDefaultQuality != nil;
     }
     
-    if (hasData && (self = [super init]))
+    if ((self = [super init]) && hasData)
     {
         self.file         = file;
         self.qualityLabel = qualityLabel;
@@ -76,7 +76,7 @@
     
     BOOL hasData = source && source.file && [source.file length];
     
-    if (hasData && (self = [super init]))
+    if ((self = [super init]) && hasData)
     {
         self.file             = source.file;
         self.qualityLabel     = source.label;

@@ -67,16 +67,16 @@
         }
         
         hasData =  description
-        || file
-        || title
-        || mediaId
-        || (mediaSources && [mediaSources count])
-        || (adSchedule && [adSchedule count])
-        || posterImageUrl
+                || file
+                || title
+                || mediaId
+                || (mediaSources && [mediaSources count])
+                || (adSchedule && [adSchedule count])
+                || posterImageUrl
         ;
     }
     
-    if (hasData && (self = [super init]))
+    if ((self = [super init]) && hasData)
     {
         self.adSchedule     = (adSchedule && [adSchedule count]) ? adSchedule : nil;
         self.desc           = description;
@@ -120,11 +120,11 @@
 {
     NSLog(@"[WBRCTVideoItem::initWithPlaylistItem]");
     
-    if (   playListItem
+    if (   (self = [super init])
+        && playListItem
         && playListItem.file
         && [playListItem.file length] > 3
-        && (self = [super init])
-        )
+    )
     {
         self.desc    = playListItem.desc;
         self.file    = playListItem.file;
@@ -133,7 +133,7 @@
         
         if (   playListItem.image
             && [playListItem.image rangeOfString:@"http" options:NSCaseInsensitiveSearch].location != NSNotFound
-            )
+        )
         {
             self.posterImageUrl = [NSURL URLWithString:playListItem.image];
         }
@@ -152,7 +152,7 @@
                 }
             }
             
-            self.mediaSources = mediaSources;
+            self.mediaSources = [mediaSources count] ? mediaSources : nil;
         }
         
         if (playListItem.adSchedule && [playListItem.adSchedule count])
@@ -169,7 +169,7 @@
                 }
             }
             
-            self.adSchedule = adBreaks;
+            self.adSchedule = [adBreaks count] ? adBreaks : nil;
         }
     }
     
@@ -198,7 +198,6 @@
         @"description": self.desc
         , @"file": self.file
         , @"mediaId": self.mediaId
-        , @"mediaSources": mediaSources
         , @"posterImageUrl": self.posterImageUrl ? self.posterImageUrl : @""
         , @"title": self.title
     } mutableCopy];
@@ -206,6 +205,11 @@
     if (adBreaks && [adBreaks count])
     {
         [results setObject:adBreaks forKey:@"adSchedule"];
+    }
+    
+    if (mediaSources && [mediaSources count])
+    {
+        [results setObject:mediaSources forKey:@"mediaSources"];
     }
     
     return results;

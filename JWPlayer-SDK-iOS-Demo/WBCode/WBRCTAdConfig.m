@@ -80,7 +80,7 @@
         ;
     }
     
-    if (hasData && (self = [super init]))
+    if ((self = [super init]) && hasData)
     {
         self.adMessage       = adMessage;
         self.adVmap          = adVmap;
@@ -140,7 +140,7 @@
     || (adConfig.tag         && [adConfig.tag length])
     ;
     
-    if (hasData && (self = [super init]))
+    if ((self = [super init]) && hasData)
     {
         self.adMessage       = adConfig.adMessage;
         self.adVmap          = adConfig.adVmap;

@@ -11,6 +11,16 @@
 
 @implementation WBRCTVideoPlayList
 
+- (instancetype)initWithPlaylist:(NSArray<WBRCTVideoItem *> *) playlist
+{
+    if ((self = [super init]) && playlist && [playlist count])
+    {
+        self.playlist = [playlist copy];
+    }
+    
+    return self;
+}
+
 - (instancetype)initWithData:(NSArray *) data
 {
     NSLog(@"[WBRCTVideoPlayList::initWithData]");
@@ -32,12 +42,7 @@
         }
     }
     
-    if (videoItems && [videoItems count] && (self = [super init]))
-    {
-        self.videoItems = videoItems;
-    }
-    
-    return self;
+    return [self initWithPlaylist:videoItems];
 }
 
 - (instancetype)initWithJson:(id) json
@@ -90,12 +95,7 @@
         }
     }
     
-    if (videoItems && [videoItems count] && (self = [super init]))
-    {
-        self.videoItems = videoItems;
-    }
-    
-    return self;
+    return [self initWithPlaylist:videoItems];
 }
 
 - (NSDictionary *) data
@@ -104,7 +104,7 @@
     
     NSMutableArray<NSDictionary *> *playListItems = [NSMutableArray<NSDictionary *> new];
     
-    for (WBRCTVideoItem *videoItem in self.videoItems)
+    for (WBRCTVideoItem *videoItem in self.playlist)
     {
         [playListItems addObject:[videoItem data]];
     }
@@ -126,12 +126,12 @@
     
     NSMutableArray<JWPlaylistItem *> *playListItems = [NSMutableArray<JWPlaylistItem *> new];
     
-    for (WBRCTVideoItem *videoItem in self.videoItems)
+    for (WBRCTVideoItem *videoItem in self.playlist)
     {
         [playListItems addObject:[videoItem playListItem]];
     }
     
-    return playListItems;
+    return [playListItems count] ? playListItems : nil;
 }
 
 @end

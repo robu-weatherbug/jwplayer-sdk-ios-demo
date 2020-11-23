@@ -30,13 +30,13 @@
         timeBetweenAds = [data parseIntegerValueForKey:@"timeBetweenAds"];
         
         hasData = frequency       != nil
-        || startOn        != nil
-        || startOnSeek    != nil
-        || timeBetweenAds != nil
+                || startOn        != nil
+                || startOnSeek    != nil
+                || timeBetweenAds != nil
         ;
     }
     
-    if (hasData && (self = [super init]))
+    if ((self = [super init]) && hasData)
     {
         self.frequency      = frequency      ? frequency.integerValue            : 0;
         // The first playlist item that will allow ad playback, index starting at 1.
@@ -78,7 +78,7 @@
 {
     NSLog(@"[WBRCTAdRules::initWithAdRules]");
     
-    if (adRules && (self = [super init]))
+    if ((self = [super init]) && adRules)
     {
         self.frequency      = adRules.frequency;
         self.startOn        = adRules.startOn;

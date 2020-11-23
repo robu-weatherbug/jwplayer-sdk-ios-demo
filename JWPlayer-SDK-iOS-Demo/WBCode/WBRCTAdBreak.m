@@ -32,7 +32,7 @@
         hasData = isNonLinear != nil || offset || tag || tags;
     }
     
-    if (hasData && (self = [super init]))
+    if ((self = [super init]) && hasData)
     {
         self.isNonLinear = (isNonLinear != nil) ? isNonLinear.boolValue : NO;
         self.offset      = offset;
@@ -76,7 +76,7 @@
     BOOL hasTags = adBreak && ((adBreak.tag && [adBreak.tag length]) || (adBreak.tags && [adBreak.tags count]));
     BOOL hasData = hasTags && adBreak.offset && [adBreak.offset length];
     
-    if (hasData && (self = [super init]))
+    if ((self = [super init]) && hasData)
     {
         self.isNonLinear = adBreak.type == JWAdTypeNonlinear;
         self.offset      = adBreak.offset;
