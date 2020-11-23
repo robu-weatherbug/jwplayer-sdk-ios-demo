@@ -110,8 +110,10 @@
 {
     NSLog(@"[WBRCTAdBreak::get_adBreak]");
     
-    NSArray *waterfallTags = self.tags != nil ? self.tags : self.tag?@[self.tag]:@[];
-    return [JWAdBreak adBreakWithTags:waterfallTags offset:self.offset nonLinear:self.isNonLinear];
+    NSArray *waterfallTags = self.tags != nil ? self.tags : self.tag ? @[self.tag] : @[];
+    JWAdBreak *adBreak     = [waterfallTags count]
+                           ? [JWAdBreak adBreakWithTags:waterfallTags offset:self.offset nonLinear:self.isNonLinear]
+                           : nil;
+    return adBreak;
 }
-
 @end

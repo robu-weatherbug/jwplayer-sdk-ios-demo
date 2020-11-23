@@ -65,7 +65,7 @@
     }
     else
     {
-        NSLog(@"Error in parsing JSON: %@", error.description);
+        NSLog(@"[WBRCTVideoPlayList::initWithJson] Error in parsing JSON. %@", error);
     }
     
     return self;

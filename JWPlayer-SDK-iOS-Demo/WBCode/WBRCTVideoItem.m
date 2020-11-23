@@ -106,7 +106,7 @@
     
     if (error)
     {
-        NSLog(@"Error in parsing JSON");
+        NSLog(@"[WBRCTVideoItem::initWithJson] Error in parsing JSON. %@", error);
     }
     else
     {
@@ -217,6 +217,8 @@
 
 - (NSData *) json
 {
+    NSLog(@"[WBRCTVideoItem::get_json]");
+    
     return [NSKeyedArchiver archivedDataWithRootObject:[self data]];
 }
 

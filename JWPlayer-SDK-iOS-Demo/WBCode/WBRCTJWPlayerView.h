@@ -48,10 +48,16 @@
 // Player config from JS side
 @property (nonatomic, retain) WBRCTPlayerConfig *playerConfig;
 
-@property (nonatomic, retain) JWConfig *playerConfigNative;
-
 // Video playlist from JS side
 @property (nonatomic, retain) WBRCTVideoPlayList *videoPlayList;
+
+// Player config from Native side
+@property (nonatomic, retain) JWConfig *playerConfigNative;
+
+// Video playlist from Native side
+@property (nonatomic, retain) NSArray <JWPlaylistItem *> *videoPlayListNative;
+
+
 
 @property(nonatomic, assign) id delegate;
 @property(nonatomic, assign) SEL onFirstFrame;

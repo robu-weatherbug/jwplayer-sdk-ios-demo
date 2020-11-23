@@ -45,6 +45,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
 
 
 @synthesize playerConfigNative  = _playerConfigNative;
+@synthesize videoPlayListNative  = _videoPlayListNative;
 
 @synthesize delegate      = _delegate;
 @synthesize onFirstFrame  = _onFirstFrame;
@@ -92,6 +93,10 @@ static const CGFloat kDefaultVolume   = 0.0f;
 {
     self.playerConfig = nil;
     self.videoPlayList = nil;
+    self.playerConfigNative = nil;
+    self.videoPlayListNative = nil;
+    self.delegate = nil;
+    self.onFirstFrame = nil;
     self.player = nil;
 }
 
@@ -360,54 +365,6 @@ static const CGFloat kDefaultVolume   = 0.0f;
     }
 }
 
-- (void) setPlayerConfigNative: (JWConfig *)playerConfig
-{
-    NSLog(@"[WBRCTJWPlayerView::setPlayerConfigNative] SDK Version: %@", JWPlayerController.SDKVersion);
-    
-    if (_player)
-    {
-        if (_player && _player.view && _player.view.superview)
-        {
-            [_player.view removeFromSuperview];
-        }
-        
-        _player = nil;
-    }
-    
-    /*
-    if (   playerConfig.advertising
-        && playerConfig.advertising.schedule
-        && [playerConfig.advertising.schedule count]
-        && playerConfig.playlist
-        && [playerConfig.playlist count]
-    )
-    {
-        for (JWPlaylistItem *playlistItem in playerConfig.playlist)
-        {
-            playlistItem.adSchedule = [playerConfig.advertising.schedule copy];
-        }
-    }
-     */
-    
-    _player = [[JWPlayerController alloc] initWithConfig:playerConfig delegate:self];
-    _player.openSafariOnAdClick = YES;
-    
-    [self addSubview:_player.view];
-    if (_playerConfig.muted)
-    {
-        self.volume = kDefaultVolume;
-    }
-    
-    NSLog(@"[WBRCTJWPlayerView::setPlayerConfigNative] SDK Version: %@, Player Version: %@, Player Edition: %@, Current Playlist Index: %ld, Playlist Start Index: %ld, Config StartOn Index: %ld"
-          , JWPlayerController.SDKVersion
-          , _player.playerVersion
-          , _player.playerEdition
-          , (long)_player.playlistIndex
-          , (long)_player.config.playlistIndex
-          , (long)_player.config.advertising.rules.startOn
-    );
-}
-
 #pragma mark - JWPlayer player configuration
 - (void) setPlayerConfig: (WBRCTPlayerConfig *)playerConfig
 {
@@ -455,6 +412,54 @@ static const CGFloat kDefaultVolume   = 0.0f;
     }
 }
 
+- (void) setPlayerConfigNative: (JWConfig *)playerConfig
+{
+    NSLog(@"[WBRCTJWPlayerView::setPlayerConfigNative] SDK Version: %@", JWPlayerController.SDKVersion);
+    
+    if (_player)
+    {
+        if (_player && _player.view && _player.view.superview)
+        {
+            [_player.view removeFromSuperview];
+        }
+        
+        _player = nil;
+    }
+    
+    /*
+     if (   playerConfig.advertising
+     && playerConfig.advertising.schedule
+     && [playerConfig.advertising.schedule count]
+     && playerConfig.playlist
+     && [playerConfig.playlist count]
+     )
+     {
+     for (JWPlaylistItem *playlistItem in playerConfig.playlist)
+     {
+     playlistItem.adSchedule = [playerConfig.advertising.schedule copy];
+     }
+     }
+     */
+    
+    _player = [[JWPlayerController alloc] initWithConfig:playerConfig delegate:self];
+    _player.openSafariOnAdClick = YES;
+    
+    [self addSubview:_player.view];
+    if (_playerConfig.muted)
+    {
+        self.volume = kDefaultVolume;
+    }
+    
+    NSLog(@"[WBRCTJWPlayerView::setPlayerConfigNative] SDK Version: %@, Player Version: %@, Player Edition: %@, Current Playlist Index: %ld, Playlist Start Index: %ld, Config StartOn Index: %ld"
+          , JWPlayerController.SDKVersion
+          , _player.playerVersion
+          , _player.playerEdition
+          , (long)_player.playlistIndex
+          , (long)_player.config.playlistIndex
+          , (long)_player.config.advertising.rules.startOn
+          );
+}
+
 - (void) setVideoPlayList: (WBRCTVideoPlayList *)videoPlayList
 {
     //#ifdef DEBUG
@@ -467,6 +472,11 @@ static const CGFloat kDefaultVolume   = 0.0f;
     //[self configurePlayer];
     
     //[self setUpVideos];
+}
+
+- (void) setVideoPlayListNative: (NSArray <JWPlaylistItem *> *)videoPlayListNative
+{
+    
 }
 
 /*
@@ -1057,17 +1067,25 @@ static const CGFloat kDefaultVolume   = 0.0f;
                 [adBreaks addObject:adScheduleData];
             }
             
-            NSDictionary *playlistItemData = @{
-                @"adSchedule":       [adBreaks count]     ? adBreaks             : @[]
-                , @"description":    playlistItem.desc    ? playlistItem.desc    : @""
+            NSMutableDictionary *playlistItemData = [@{
+                @"description":      playlistItem.desc    ? playlistItem.desc    : @""
                 , @"file":           playlistItem.file    ? playlistItem.file    : @""
                 , @"mediaId":        playlistItem.mediaId ? playlistItem.mediaId : @""
-                , @"mediaSources":   [mediaSources count] ? mediaSources         : @[]
                 , @"posterImageUrl": playlistItem.image   ? playlistItem.image   : @""
                 , @"title":          playlistItem.title   ? playlistItem.title   : @""
-            };
-            [playlistItems addObject:playlistItemData];
+            } mutableCopy];
             
+            if ([adBreaks count])
+            {
+                [playlistItemData setObject:adBreaks forKey:@"adSchedule"];
+            }
+            
+            if ([mediaSources count])
+            {
+                [playlistItemData setObject:mediaSources forKey:@"mediaSources"];
+            }
+            
+            [playlistItems addObject:playlistItemData];
         }
         
         playlistData = @{
@@ -1149,8 +1167,12 @@ static const CGFloat kDefaultVolume   = 0.0f;
                 jwConfig.file    = videoItem.file;
                 jwConfig.image   = [videoItem.posterImageUrl absoluteString];
                 jwConfig.mediaId = videoItem.mediaId;
-                jwConfig.sources = sources;
                 jwConfig.title   = videoItem.title;
+                
+                if (sources && [sources count])
+                {
+                    jwConfig.sources = sources;
+                }
                 
                 if (   videoItem.adSchedule
                     && [videoItem.adSchedule count]
@@ -1167,7 +1189,11 @@ static const CGFloat kDefaultVolume   = 0.0f;
                         [adSchedule addObject:[ad adBreak]];
                     }
                     
-                    adConfig.schedule    = adSchedule;
+                    if (adSchedule && [adSchedule count])
+                    {
+                        adConfig.schedule    = adSchedule;
+                    }
+                    
                     jwConfig.advertising = adConfig;
                 }
             }
@@ -1189,8 +1215,13 @@ static const CGFloat kDefaultVolume   = 0.0f;
                     playlistItem.file    = videoItem.file;
                     playlistItem.image   = [videoItem.posterImageUrl absoluteString];
                     playlistItem.mediaId = videoItem.mediaId;
-                    playlistItem.sources = sources;
                     playlistItem.title   = videoItem.title;
+                    
+                    if (sources && [sources count])
+                    {
+                        playlistItem.sources = sources;
+                    }
+                    
                     //NOTE:- check this out for adding ad tag variables https://support.jwplayer.com/articles/ad-tag-targeting-macro-reference
                     if (    videoItem.adSchedule
                         && [videoItem.adSchedule count]
@@ -1202,13 +1233,19 @@ static const CGFloat kDefaultVolume   = 0.0f;
                             [adSchedule addObject:[ad adBreak]];
                         }
                         
-                        playlistItem.adSchedule = adSchedule;
+                        if (adSchedule && [adSchedule count])
+                        {
+                            playlistItem.adSchedule = adSchedule;
+                        }
                     }
                     
                     [playListItems addObject:playlistItem];
                 }
                 
-                [jwConfig setPlaylist:playListItems];
+                if (playListItems && [playListItems count])
+                {
+                    [jwConfig setPlaylist:playListItems];
+                }
             }
         }
         

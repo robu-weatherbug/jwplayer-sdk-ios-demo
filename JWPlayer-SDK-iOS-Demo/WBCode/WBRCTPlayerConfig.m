@@ -53,10 +53,9 @@ static const BOOL kPreload       = YES;
         muted         = [data parseBoolValueForKey:@"muted"];
         nextUpDisplay = [data parseBoolValueForKey:@"nextUpDisplay"];
         nextUpOffset  = [data parseIntegerValueForKey:@"nextUpOffset"];
+        playlist      = [data parseArrayForKey:@"playlist"];
         playlistIndex = [data parseIntegerValueForKey:@"playlistIndex"];
         preload       = [data parseBoolValueForKey:@"preload"];
-        
-        playlist      = [data parseArrayForKey:@"playlist"];
         
         hasData = (advertising && [advertising count])
                 || autoStart     != nil
@@ -90,8 +89,10 @@ static const BOOL kPreload       = YES;
         if (playlist && [playlist count])
         {
             WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithData:playlist];
-            //WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithPlaylistItems:playlist];
-            if (videoPlaylist && videoPlaylist.playlist && [videoPlaylist.playlist count])
+            if (   videoPlaylist
+                && videoPlaylist.playlist
+                && [videoPlaylist.playlist count]
+            )
             {
                 self.playlist = [videoPlaylist.playlist copy];
             }
@@ -127,7 +128,7 @@ static const BOOL kPreload       = YES;
     }
     else
     {
-        NSLog(@"Error in parsing JSON");
+        NSLog(@"[WBRCTPlayerConfig::initWithJson] Error in parsing JSON. %@", error);
     }
     
     return self;
@@ -265,7 +266,6 @@ static const BOOL kPreload       = YES;
             WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithPlaylist:playerConfig.playlist];
             [jwConfig setPlaylist:videoPlaylist.playListItems];
         }
-
     }
     else
     {
