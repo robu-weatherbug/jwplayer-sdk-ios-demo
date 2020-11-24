@@ -72,29 +72,28 @@ static const BOOL kPreload       = YES;
     
     if ((self = [super init]) && hasData)
     {
-        self.autoStart     = autoStart     != nil ? autoStart.boolValue        : kAutoStart;
-        self.controls      = controls      != nil ? controls.boolValue         : kControls;
-        self.fullScreen    = fullScreen    != nil ? fullScreen.boolValue       : kFullScreen;
-        self.muted         = muted         != nil ? muted.boolValue            : kMuted;
-        self.nextUpDisplay = nextUpDisplay != nil ? nextUpDisplay.boolValue    : kNextUpDisplay;
-        self.nextUpOffset  = nextUpOffset  != nil ? nextUpOffset.integerValue  : kNextUpOffset;
-        self.playlistIndex = playlistIndex != nil ? playlistIndex.integerValue : kPlaylistIndex;
-        self.preload       = preload       != nil ? preload.boolValue          : kPreload;
+        _autoStart     = autoStart     != nil ? autoStart.boolValue        : kAutoStart;
+        _controls      = controls      != nil ? controls.boolValue         : kControls;
+        _fullScreen    = fullScreen    != nil ? fullScreen.boolValue       : kFullScreen;
+        _muted         = muted         != nil ? muted.boolValue            : kMuted;
+        _nextUpDisplay = nextUpDisplay != nil ? nextUpDisplay.boolValue    : kNextUpDisplay;
+        _nextUpOffset  = nextUpOffset  != nil ? nextUpOffset.integerValue  : kNextUpOffset;
+        _playlistIndex = playlistIndex != nil ? playlistIndex.integerValue : kPlaylistIndex;
+        _preload       = preload       != nil ? preload.boolValue          : kPreload;
         
         if (advertising && [advertising count])
         {
-            self.advertising = [[WBRCTAdConfig alloc] initWithData:advertising];
+            _advertising = [[WBRCTAdConfig alloc] initWithData:advertising];
         }
         
         if (playlist && [playlist count])
         {
             WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithData:playlist];
-            if (   videoPlaylist
-                && videoPlaylist.playlist
+            if (   videoPlaylist.playlist
                 && [videoPlaylist.playlist count]
             )
             {
-                self.playlist = [videoPlaylist.playlist copy];
+                _playlist = [videoPlaylist.playlist copy];
             }
         }
     }
@@ -140,27 +139,27 @@ static const BOOL kPreload       = YES;
     
     if ((self = [super init]) && config)
     {
-        self.autoStart     = config.autostart;
-        self.controls      = config.controls;
-        self.fullScreen    = kFullScreen;
-        self.muted         = kMuted;
-        self.nextUpDisplay = config.nextUpDisplay;
-        self.nextUpOffset  = config.nextupOffset;
-        self.playlistIndex = config.playlistIndex;
-        self.preload       = config.preload;
+        _autoStart     = config.autostart;
+        _controls      = config.controls;
+        _fullScreen    = kFullScreen;
+        _muted         = kMuted;
+        _nextUpDisplay = config.nextUpDisplay;
+        _nextUpOffset  = config.nextupOffset;
+        _playlistIndex = config.playlistIndex;
+        _preload       = config.preload;
         
         if (config.playlist && [config.playlist count])
         {
             WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithPlaylistItems:config.playlist];
-            if (videoPlaylist && videoPlaylist.playlist && [videoPlaylist.playlist count])
+            if (videoPlaylist.playlist && [videoPlaylist.playlist count])
             {
-                self.playlist = [videoPlaylist.playlist copy];
+                _playlist = [videoPlaylist.playlist copy];
             }
         }
         
         if (config.advertising)
         {
-            self.advertising = [[WBRCTAdConfig alloc] initWithAdConfig:config.advertising];
+            _advertising = [[WBRCTAdConfig alloc] initWithAdConfig:config.advertising];
         }
     }
     
@@ -175,27 +174,27 @@ static const BOOL kPreload       = YES;
 
     if ((self = [super init]) && config)
     {
-        self.autoStart     = config.autostart;
-        self.controls      = config.controls;
-        self.fullScreen    = kFullScreen;
-        self.muted         = kMuted;
-        self.nextUpDisplay = config.nextUpDisplay;
-        self.nextUpOffset  = config.nextupOffset;
-        self.playlistIndex = config.playlistIndex;
-        self.preload       = config.preload;
+        _autoStart     = config.autostart;
+        _controls      = config.controls;
+        _fullScreen    = kFullScreen;
+        _muted         = kMuted;
+        _nextUpDisplay = config.nextUpDisplay;
+        _nextUpOffset  = config.nextupOffset;
+        _playlistIndex = config.playlistIndex;
+        _preload       = config.preload;
         
         if (playlist && [playlist count])
         {
             WBRCTVideoPlayList *videoPlaylist = [[WBRCTVideoPlayList alloc] initWithPlaylistItems:playlist];
-            if (videoPlaylist && videoPlaylist.playlist && [videoPlaylist.playlist count])
+            if (videoPlaylist.playlist && [videoPlaylist.playlist count])
             {
-                self.playlist = [videoPlaylist.playlist copy];
+                _playlist = [videoPlaylist.playlist copy];
             }
         }
         
         if (config.advertising)
         {
-            self.advertising = [[WBRCTAdConfig alloc] initWithAdConfig:config.advertising];
+            _advertising = [[WBRCTAdConfig alloc] initWithAdConfig:config.advertising];
         }
     }
     
@@ -209,6 +208,17 @@ static const BOOL kPreload       = YES;
     NSLog(@"[WBRCTPlayerConfig::initWithConfig:andPlaylistItem]");
     
     return [self initWithConfig:config andPlaylist:@[playistItem]];
+}
+
+- (void) setPlaylistIndex: (NSInteger) playlistIndex
+{
+    NSLog(@"[WBRCTPlayerConfig::setPlaylistIndex] Playlist Index: %ld", playlistIndex);
+    
+    _playlistIndex = playlistIndex;
+    if (_jwConfig)
+    {
+        [_jwConfig setPlaylistIndex:_playlistIndex];
+    }
 }
 
 + (WBRCTPlayerConfig *) defaultConfig
@@ -228,18 +238,6 @@ static const BOOL kPreload       = YES;
         defaultConfig.playlistIndex = kPlaylistIndex;
         defaultConfig.preload       = kPreload;
     });
-    
-    /*
-     WBRCTPlayerConfig *defaultConfig = [[WBRCTPlayerConfig alloc] init];
-     defaultConfig.autoStart     = kAutoStart;
-     defaultConfig.controls      = kControls;
-     defaultConfig.fullScreen    = kFullScreen;
-     defaultConfig.muted         = kMuted;
-     defaultConfig.nextUpDisplay = kNextUpDisplay;
-     defaultConfig.nextUpOffset  = kNextUpOffset;
-     defaultConfig.playlistIndex = kPlaylistIndex;
-     defaultConfig.preload       = kPreload;
-     */
     
     return defaultConfig;
 }

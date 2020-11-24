@@ -78,13 +78,13 @@
     
     if ((self = [super init]) && hasData)
     {
-        self.adSchedule     = (adSchedule && [adSchedule count]) ? adSchedule : nil;
-        self.desc           = description;
-        self.file           = file;
-        self.mediaId        = mediaId;
-        self.mediaSources   = (mediaSources && [mediaSources count]) ? mediaSources : nil;
-        self.posterImageUrl = posterImageUrl;
-        self.title          = title;
+        _adSchedule     = (adSchedule && [adSchedule count]) ? adSchedule : nil;
+        _desc           = description;
+        _file           = file;
+        _mediaId        = mediaId;
+        _mediaSources   = (mediaSources && [mediaSources count]) ? mediaSources : nil;
+        _posterImageUrl = posterImageUrl;
+        _title          = title;
     }
     
     return self;
@@ -126,16 +126,16 @@
         && [playListItem.file length] > 3
     )
     {
-        self.desc    = playListItem.desc;
-        self.file    = playListItem.file;
-        self.mediaId = playListItem.mediaId;
-        self.title   = playListItem.title;
+        _desc    = playListItem.desc;
+        _file    = playListItem.file;
+        _mediaId = playListItem.mediaId;
+        _title   = playListItem.title;
         
         if (   playListItem.image
             && [playListItem.image rangeOfString:@"http" options:NSCaseInsensitiveSearch].location != NSNotFound
         )
         {
-            self.posterImageUrl = [NSURL URLWithString:playListItem.image];
+            _posterImageUrl = [NSURL URLWithString:playListItem.image];
         }
         
         if (playListItem.sources && [playListItem.sources count])
@@ -152,7 +152,7 @@
                 }
             }
             
-            self.mediaSources = [mediaSources count] ? mediaSources : nil;
+            _mediaSources = [mediaSources count] ? mediaSources : nil;
         }
         
         if (playListItem.adSchedule && [playListItem.adSchedule count])
@@ -169,7 +169,7 @@
                 }
             }
             
-            self.adSchedule = [adBreaks count] ? adBreaks : nil;
+            _adSchedule = [adBreaks count] ? adBreaks : nil;
         }
     }
     
@@ -202,7 +202,7 @@
         , @"title": self.title
     } mutableCopy];
     
-    if (adBreaks && [adBreaks count])
+    if ([adBreaks count])
     {
         [results setObject:adBreaks forKey:@"adSchedule"];
     }
@@ -240,10 +240,7 @@
         [sources addObject:src.source];
     }
     
-    if (sources && [sources count])
-    {
-        playListItem.sources = sources;
-    }
+    playListItem.sources = [sources count] ? sources : nil;
     
     NSMutableArray<JWAdBreak *> *adBreaks = [NSMutableArray<JWAdBreak *> new];
     for (WBRCTAdBreak *src in self.adSchedule)
@@ -251,10 +248,8 @@
         [adBreaks addObject:src.adBreak];
     }
     
-    if (adBreaks && [adBreaks count])
-    {
-        playListItem.adSchedule = adBreaks;
-    }
+    playListItem.adSchedule = [adBreaks count] ? adBreaks : nil;
+
     
     return playListItem;
 }

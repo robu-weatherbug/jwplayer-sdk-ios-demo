@@ -32,12 +32,12 @@
     
     if ((self = [super init]) && hasData)
     {
-        self.file         = file;
-        self.qualityLabel = qualityLabel;
+        _file         = file;
+        _qualityLabel = qualityLabel;
         
         if (isDefaultQuality != nil)
         {
-            self.isDefaultQuality = isDefaultQuality.boolValue;
+            _isDefaultQuality = isDefaultQuality.boolValue;
         }
     }
     
@@ -60,7 +60,7 @@
     
     if (error)
     {
-        NSLog(@"Error in parsing JSON");
+        NSLog(@"[WBRCTMediaSource::initWithJson] Error in parsing JSON. %@", error);
     }
     else
     {
@@ -78,9 +78,9 @@
     
     if ((self = [super init]) && hasData)
     {
-        self.file             = source.file;
-        self.qualityLabel     = source.label;
-        self.isDefaultQuality = source.defaultQuality;
+        _file             = source.file;
+        _qualityLabel     = source.label;
+        _isDefaultQuality = source.defaultQuality;
     }
     
     return self;

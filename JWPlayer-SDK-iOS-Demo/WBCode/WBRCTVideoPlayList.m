@@ -15,7 +15,7 @@
 {
     if ((self = [super init]) && playlist && [playlist count])
     {
-        self.playlist = [playlist copy];
+        _playlist = [playlist copy];
     }
     
     return self;

@@ -129,35 +129,61 @@
     NSInteger playlistIndex = 2;
     NSUInteger startOn      = 5;
     
-    
     _jwPlayerView = [[WBRCTJWPlayerView alloc] init];
     _jwPlayerView.delegate = self;
     _jwPlayerView.onFirstFrame = @selector(onFirstFrame);
     
-    
-    // When first loading a playlist, the config needs to have playlistIndex
-    // When moving to another playlist item, user the playerView to set it
-    
-    // 1. From JWConfig with playlist
-    //[jwConfigWithPlaylist setPlaylistIndex:playlistIndex];
-    [_jwPlayerView setPlayerConfigNative:jwConfigWithPlaylist];
-    [_jwPlayerView setPlaylistIndex:playlistIndex];
-        
-    // 2. From JWConfig without playlist
-    //[jwConfigWithoutPlaylist setPlaylistIndex:playlistIndex];
-    //[_jwPlayerView setPlayerConfigNative:jwConfigWithoutPlaylist];
-    //[_jwPlayerView setVideoPlayList:playlist];
-    //[_jwPlayerView setPlaylistIndex:playlistIndex];
-    
-    // 3. JSON Config with playlist
-    //[_jwPlayerView setPlayerConfig:playerConfigWithPlaylist];
-    //[_jwPlayerView setPlaylistIndex:playlistIndex];
-    
-    // 4. JSON Config without playlist
-    //[_jwPlayerView setPlayerConfig:playerConfigWithoutPlaylist];
-    //[_jwPlayerView setVideoPlayList:playlist];
 
-    
+    /*
+     * Use Cases:
+     *      1. From JWConfig with playlist
+     *      2. From JWConfig without playlist
+     *      3. JSON Config with playlist
+     *      4. JSON Config without playlist
+     * Notes
+     *      When first loading a playlist, the config needs to have playlistIndex
+     *      When moving to another playlist item, user the playerView to set it
+     */
+    NSInteger useCase = 4;
+    switch (useCase)
+    {
+        // From JWConfig with playlist
+        case 1:
+        {
+            [jwConfigWithPlaylist setPlaylistIndex:playlistIndex];
+            [_jwPlayerView setPlayerConfigNative:jwConfigWithPlaylist];
+            break;
+        }
+            
+        // From JWConfig without playlist
+        case 2:
+        {
+            [jwConfigWithoutPlaylist setPlaylistIndex:playlistIndex];
+            [_jwPlayerView setPlayerConfigNative:jwConfigWithoutPlaylist];
+            [_jwPlayerView setVideoPlayList:playlist];
+            break;
+        }
+        
+        // JSON Config with playlist
+        case 3:
+        {
+            [playerConfigWithPlaylist setPlaylistIndex:playlistIndex];
+            [_jwPlayerView setPlayerConfig:playerConfigWithPlaylist];
+            break;
+        }
+            
+        // JSON Config without playlist
+        case 4:
+        {
+            [playerConfigWithoutPlaylist setPlaylistIndex:playlistIndex];
+            [_jwPlayerView setPlayerConfig:playerConfigWithoutPlaylist];
+            [_jwPlayerView setVideoPlayList:playlist];
+            break;
+        }
+            
+        default:
+            break;
+    }
 }
 
 - (void) onFirstFrame

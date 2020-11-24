@@ -82,17 +82,17 @@
     
     if ((self = [super init]) && hasData)
     {
-        self.adMessage       = adMessage;
-        self.adVmap          = adVmap;
-        self.client          = client ? (JWAdClient)client.integerValue : JWAdClientVast;
-        self.googimaSettings = googimaSettings;
-        self.rules           = rules;
-        self.schedule        = (adBreaks && [adBreaks count]) ? adBreaks : nil;
-        self.skipMessage     = skipMessage;
-        self.skipOffset      = skipOffset ? skipOffset.integerValue : 0;
-        self.skipText        = skipText;
-        self.tag             = tag;
-        self.vpaidControls   = vpaidControls ? vpaidControls.boolValue : NO;
+        _adMessage       = adMessage;
+        _adVmap          = adVmap;
+        _client          = client ? (JWAdClient)client.integerValue : JWAdClientVast;
+        _googimaSettings = googimaSettings;
+        _rules           = rules;
+        _schedule        = (adBreaks && [adBreaks count]) ? adBreaks : nil;
+        _skipMessage     = skipMessage;
+        _skipOffset      = skipOffset ? skipOffset.integerValue : 0;
+        _skipText        = skipText;
+        _tag             = tag;
+        _vpaidControls   = vpaidControls ? vpaidControls.boolValue : NO;
     }
     
     return self;
@@ -114,7 +114,7 @@
     
     if (error)
     {
-        NSLog(@"Error in parsing JSON");
+        NSLog(@"[WBRCTAdConfig::initWithJson] Error in parsing JSON. %@", error);
     }
     else
     {
@@ -142,18 +142,18 @@
     
     if ((self = [super init]) && hasData)
     {
-        self.adMessage       = adConfig.adMessage;
-        self.adVmap          = adConfig.adVmap;
-        self.client          = adConfig.client;
-        self.skipMessage     = adConfig.skipMessage;
-        self.skipOffset      = adConfig.skipOffset;
-        self.skipText        = adConfig.skipText;
-        self.tag             = adConfig.tag;
-        self.vpaidControls   = adConfig.vpaidControls;
+        _adMessage       = adConfig.adMessage;
+        _adVmap          = adConfig.adVmap;
+        _client          = adConfig.client;
+        _skipMessage     = adConfig.skipMessage;
+        _skipOffset      = adConfig.skipOffset;
+        _skipText        = adConfig.skipText;
+        _tag             = adConfig.tag;
+        _vpaidControls   = adConfig.vpaidControls;
         
         if (adConfig.rules)
         {
-            self.rules = [[WBRCTAdRules alloc] initWithAdRules:adConfig.rules];
+            _rules = [[WBRCTAdRules alloc] initWithAdRules:adConfig.rules];
         }
         
         if (adConfig.schedule && [adConfig.schedule count])
@@ -163,12 +163,12 @@
             {
                 [schedule addObject:[[WBRCTAdBreak alloc] initWithAdBreak:adBreak]];
             }
-            self.schedule = (schedule && [schedule count]) ? schedule : nil;
+            _schedule = [schedule count] ? schedule : nil;
         }
         
         if (adConfig.googimaSettings)
         {
-            self.googimaSettings = [[WBRCTIMASettings alloc] initWithIMASettings:adConfig.googimaSettings];
+            _googimaSettings = [[WBRCTIMASettings alloc] initWithIMASettings:adConfig.googimaSettings];
         }
     }
     
@@ -223,7 +223,7 @@
     {
         [schedule addObject:[adBreak adBreak]];
     }
-    adConfig.schedule = (schedule && [schedule count]) ? schedule : nil;
+    adConfig.schedule = [schedule count] ? schedule : nil;
     
     return adConfig;
 }

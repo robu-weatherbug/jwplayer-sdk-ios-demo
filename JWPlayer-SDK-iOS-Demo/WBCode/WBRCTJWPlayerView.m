@@ -35,6 +35,7 @@
 static const CGFloat kDefaultDuration = 0.0f;
 static const CGFloat kDefaultPosition = 0.0f;
 static const CGFloat kDefaultVolume   = 0.0f;
+static const NSInteger kDefaultSkipOffset = 5;
 
 @synthesize playerConfig  = _playerConfig;
 @synthesize videoPlayList = _videoPlayList;
@@ -91,13 +92,13 @@ static const CGFloat kDefaultVolume   = 0.0f;
 
 - (void)dealloc
 {
-    self.playerConfig = nil;
-    self.videoPlayList = nil;
-    self.playerConfigNative = nil;
-    self.videoPlayListNative = nil;
-    self.delegate = nil;
-    self.onFirstFrame = nil;
-    self.player = nil;
+    _playerConfig = nil;
+    _videoPlayList = nil;
+    _playerConfigNative = nil;
+    _videoPlayListNative = nil;
+    _delegate = nil;
+    _onFirstFrame = nil;
+    _player = nil;
 }
 
 - (void)awakeFromNib
@@ -447,7 +448,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
     [self addSubview:_player.view];
     if (_playerConfig.muted)
     {
-        self.volume = kDefaultVolume;
+        _volume = kDefaultVolume;
     }
     
     NSLog(@"[WBRCTJWPlayerView::setPlayerConfigNative] SDK Version: %@, Player Version: %@, Player Edition: %@, Current Playlist Index: %ld, Playlist Start Index: %ld, Config StartOn Index: %ld"
@@ -467,11 +468,6 @@ static const CGFloat kDefaultVolume   = 0.0f;
     //#endif
     
     [_player.config setPlaylist:videoPlayList.playListItems];
-    
-    //_videoPlayList = videoPlayList;
-    //[self configurePlayer];
-    
-    //[self setUpVideos];
 }
 
 - (void) setVideoPlayListNative: (NSArray <JWPlaylistItem *> *)videoPlayListNative
@@ -1146,8 +1142,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
          }
          */
         
-        if (
-            self.videoPlayList
+        if (   self.videoPlayList
             && self.videoPlayList.playlist
             && [self.videoPlayList.playlist count]
             )
@@ -1169,10 +1164,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
                 jwConfig.mediaId = videoItem.mediaId;
                 jwConfig.title   = videoItem.title;
                 
-                if (sources && [sources count])
-                {
-                    jwConfig.sources = sources;
-                }
+                jwConfig.sources = [sources count] ? sources : nil;
                 
                 if (   videoItem.adSchedule
                     && [videoItem.adSchedule count]
@@ -1180,7 +1172,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
                 {
                     JWAdConfig *adConfig = [JWAdConfig new];
                     adConfig.skipText    = @"Skip";
-                    adConfig.skipOffset  = jwConfig.advertising.skipOffset ? jwConfig.advertising.skipOffset : 5;
+                    adConfig.skipOffset  = jwConfig.advertising.skipOffset ? jwConfig.advertising.skipOffset : kDefaultSkipOffset;
                     adConfig.client      = jwConfig.advertising.client     ? jwConfig.advertising.client     : JWAdClientVast;
                     
                     NSMutableArray *adSchedule = [NSMutableArray new];
@@ -1189,10 +1181,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
                         [adSchedule addObject:[ad adBreak]];
                     }
                     
-                    if (adSchedule && [adSchedule count])
-                    {
-                        adConfig.schedule    = adSchedule;
-                    }
+                    adConfig.schedule = [adSchedule count] ? adSchedule : nil;
                     
                     jwConfig.advertising = adConfig;
                 }
@@ -1210,6 +1199,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
                         JWSource *jwSource = [JWSource sourceWithFile:source.file label:source.qualityLabel isDefault:source.isDefaultQuality];
                         [sources addObject:jwSource];
                     }
+                    playlistItem.sources = [sources count] ? sources : nil;
                     
                     playlistItem.desc    = videoItem.desc;
                     playlistItem.file    = videoItem.file;
@@ -1217,10 +1207,6 @@ static const CGFloat kDefaultVolume   = 0.0f;
                     playlistItem.mediaId = videoItem.mediaId;
                     playlistItem.title   = videoItem.title;
                     
-                    if (sources && [sources count])
-                    {
-                        playlistItem.sources = sources;
-                    }
                     
                     //NOTE:- check this out for adding ad tag variables https://support.jwplayer.com/articles/ad-tag-targeting-macro-reference
                     if (    videoItem.adSchedule
@@ -1233,16 +1219,13 @@ static const CGFloat kDefaultVolume   = 0.0f;
                             [adSchedule addObject:[ad adBreak]];
                         }
                         
-                        if (adSchedule && [adSchedule count])
-                        {
-                            playlistItem.adSchedule = adSchedule;
-                        }
+                        playlistItem.adSchedule = [adSchedule count] ? adSchedule : nil;
                     }
                     
                     [playListItems addObject:playlistItem];
                 }
                 
-                if (playListItems && [playListItems count])
+                if ([playListItems count])
                 {
                     [jwConfig setPlaylist:playListItems];
                 }
@@ -1255,7 +1238,7 @@ static const CGFloat kDefaultVolume   = 0.0f;
         [self addSubview:_player.view];
         if (_playerConfig.muted)
         {
-            self.volume = kDefaultVolume;
+            _volume = kDefaultVolume;
         }
         
         if (_playlistIndex != _playerConfig.playlistIndex)

@@ -38,11 +38,11 @@
     
     if ((self = [super init]) && hasData)
     {
-        self.frequency      = frequency      ? frequency.integerValue            : 0;
+        _frequency      = frequency      ? frequency.integerValue            : 0;
         // The first playlist item that will allow ad playback, index starting at 1.
-        self.startOn        = startOn        ? startOn.integerValue              : 1;
-        self.startOnSeek    = startOnSeek    ? (JWAdShown)frequency.integerValue : JWAdShownNone;
-        self.timeBetweenAds = timeBetweenAds ? timeBetweenAds.integerValue       : 0;
+        _startOn        = startOn        ? startOn.integerValue              : 1;
+        _startOnSeek    = startOnSeek    ? (JWAdShown)frequency.integerValue : JWAdShownNone;
+        _timeBetweenAds = timeBetweenAds ? timeBetweenAds.integerValue       : 0;
     }
     
     return self;
@@ -64,7 +64,7 @@
     
     if (error)
     {
-        NSLog(@"Error in parsing JSON");
+        NSLog(@"[WBRCTAdRules::initWithJson] Error in parsing JSON. %@", error);
     }
     else
     {
@@ -80,10 +80,10 @@
     
     if ((self = [super init]) && adRules)
     {
-        self.frequency      = adRules.frequency;
-        self.startOn        = adRules.startOn;
-        self.startOnSeek    = adRules.startOnSeek;
-        self.timeBetweenAds = adRules.timeBetweenAds;
+        _frequency      = adRules.frequency;
+        _startOn        = adRules.startOn;
+        _startOnSeek    = adRules.startOnSeek;
+        _timeBetweenAds = adRules.timeBetweenAds;
     }
     
     return self;
@@ -103,6 +103,8 @@
 
 - (NSData *) json
 {
+    NSLog(@"[WBRCTAdRules::get_json]");
+	
     return [NSKeyedArchiver archivedDataWithRootObject:[self data]];
 }
 

@@ -54,15 +54,15 @@
     
     if ((self = [super init]) && hasData)
     {
-        self.autoPlayAdBreaks         = autoPlayAdBreaks         ? autoPlayAdBreaks.boolValue         : YES;
-        self.disableNowPlayingInfo    = disableNowPlayingInfo    ? disableNowPlayingInfo.boolValue    : NO;
-        self.enableBackgroundPlayback = enableBackgroundPlayback ? enableBackgroundPlayback.boolValue : NO;
-        self.enableDebugMode          = enableDebugMode          ? enableDebugMode.boolValue          : NO;
-        self.maxRedirects             = maxRedirects             ? maxRedirects.integerValue          : 4;
-        self.language                 = language;
-        self.playerType               = playerType;
-        self.playerVersion            = playerVersion;
-        self.ppid                     = ppid;
+        _autoPlayAdBreaks         = autoPlayAdBreaks         ? autoPlayAdBreaks.boolValue         : YES;
+        _disableNowPlayingInfo    = disableNowPlayingInfo    ? disableNowPlayingInfo.boolValue    : NO;
+        _enableBackgroundPlayback = enableBackgroundPlayback ? enableBackgroundPlayback.boolValue : NO;
+        _enableDebugMode          = enableDebugMode          ? enableDebugMode.boolValue          : NO;
+        _maxRedirects             = maxRedirects             ? maxRedirects.integerValue          : 4;
+        _language                 = language;
+        _playerType               = playerType;
+        _playerVersion            = playerVersion;
+        _ppid                     = ppid;
     }
     
     return self;
@@ -84,7 +84,7 @@
     
     if (error)
     {
-        NSLog(@"Error in parsing JSON");
+        NSLog(@"[WBRCTIMASettings::initWithJson] Error in parsing JSON. %@", error);
     }
     else
     {
@@ -101,15 +101,15 @@
     
     if ((self = [super init]) && imaSettings)
     {
-        self.autoPlayAdBreaks         = imaSettings.autoPlayAdBreaks;
-        self.disableNowPlayingInfo    = imaSettings.disableNowPlayingInfo;
-        self.enableBackgroundPlayback = imaSettings.enableBackgroundPlayback;
-        self.enableDebugMode          = imaSettings.enableDebugMode;
-        self.language                 = imaSettings.language;
-        self.maxRedirects             = imaSettings.maxRedirects;
-        self.playerType               = imaSettings.playerType;
-        self.playerVersion            = imaSettings.playerVersion;
-        self.ppid                     = imaSettings.ppid;
+        _autoPlayAdBreaks         = imaSettings.autoPlayAdBreaks;
+        _disableNowPlayingInfo    = imaSettings.disableNowPlayingInfo;
+        _enableBackgroundPlayback = imaSettings.enableBackgroundPlayback;
+        _enableDebugMode          = imaSettings.enableDebugMode;
+        _language                 = imaSettings.language;
+        _maxRedirects             = imaSettings.maxRedirects;
+        _playerType               = imaSettings.playerType;
+        _playerVersion            = imaSettings.playerVersion;
+        _ppid                     = imaSettings.ppid;
     }
     
     return self;

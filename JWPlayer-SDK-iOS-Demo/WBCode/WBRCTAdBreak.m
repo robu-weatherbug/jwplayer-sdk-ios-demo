@@ -34,10 +34,10 @@
     
     if ((self = [super init]) && hasData)
     {
-        self.isNonLinear = (isNonLinear != nil) ? isNonLinear.boolValue : NO;
-        self.offset      = offset;
-        self.tag         = tag;
-        self.tags        = (tags && [tags count]) ? tags : nil;
+        _isNonLinear = (isNonLinear != nil) ? isNonLinear.boolValue : NO;
+        _offset      = offset;
+        _tag         = tag;
+        _tags        = (tags && [tags count]) ? tags : nil;
     }
     
     return self;
@@ -59,7 +59,7 @@
     
     if (error)
     {
-        NSLog(@"[WBRCTAdBreak::initWithJson] Error in parsing JSON");
+        NSLog(@"[WBRCTAdBreak::initWithJson] Error in parsing JSON. %@", error);
     }
     else
     {
@@ -78,10 +78,10 @@
     
     if ((self = [super init]) && hasData)
     {
-        self.isNonLinear = adBreak.type == JWAdTypeNonlinear;
-        self.offset      = adBreak.offset;
-        self.tag         = adBreak.tag;
-        self.tags        = adBreak.tags;
+        _isNonLinear = adBreak.type == JWAdTypeNonlinear;
+        _offset      = adBreak.offset;
+        _tag         = adBreak.tag;
+        _tags        = adBreak.tags;
     }
     
     return self;
@@ -92,10 +92,10 @@
     NSLog(@"[WBRCTAdBreak::get_data]");
     
     return @{
-        @"isNonLinear": @(self.isNonLinear)
-        , @"offset": self.offset ? self.offset : @""
-        , @"tag": self.tag ? self.tag : @""
-        , @"tags": self.tags ? self.tags : @[@""]
+             @"isNonLinear": @(self.isNonLinear)
+             , @"offset":    self.offset ? self.offset : @""
+             , @"tag":       self.tag    ? self.tag    : @""
+             , @"tags":      self.tags   ? self.tags   : @[@""]
     };
 }
 
